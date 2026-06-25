@@ -1,3 +1,7 @@
+# ============================
+# Backend (Python/Django)
+# ============================
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -50,17 +54,16 @@ coverage.xml
 *.mo
 *.pot
 
-# Django stuff:
-*.log
+# Django stuff
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
 
-# Flask stuff:
+# Flask stuff
 instance/
 .webassets-cache
 
-# Scrapy stuff:
+# Scrapy stuff
 .scrapy
 
 # Sphinx documentation
@@ -93,9 +96,10 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-# .env.example
 .env
 .venv
+.env.development
+.env.production
 env/
 venv/
 ENV/
@@ -103,6 +107,11 @@ env.bak/
 venv.bak/
 .env.prod
 certs
+.env.local
+.env.*.local
+.env.dev
+.seckret.example
+
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -112,7 +121,7 @@ certs
 
 # mkdocs documentation
 /site
-
+.vscode
 # mypy
 .mypy_cache/
 .dmypy.json
@@ -120,13 +129,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-*~
 
 # Django
 staticfiles/
@@ -137,8 +139,39 @@ Attachments/*
 logs/*
 !logs/.gitkeep
 
-# Local settings
-.env.local
-.env.*.local
-.env.dev
-.seckret.example
+# ============================
+# Frontend (Node.js/React)
+# ============================
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-ssr/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Local files
+*.local
+
+# ============================
+# IDE / Editor
+# ============================
+
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+*~
