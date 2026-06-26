@@ -1,0 +1,376 @@
+{
+  "header": {
+    "stateInstitution": "State Institution",
+    "clinicName": "Clinical Hospital",
+    "presidential": "under the Administration of the President of the KR",
+    "appointment": "Book Appointment",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "logoAlt": "Clinical Hospital logo"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "doctors": "Doctors",
+    "services": "Services",
+    "news": "News",
+    "contacts": "Contacts",
+    "appointment": "Appointment"
+  },
+  "hero": {
+    "title": "Multi-Profile Clinic",
+    "subtitle": "Modern high-quality medical care",
+    "description": "Our clinic provides a full range of medical services using modern equipment and advanced technologies",
+    "cta": "Book Appointment",
+    "learnMore": "Learn More"
+  },
+  "quickAccess": {
+    "examination": {
+      "title": "Examination",
+      "description": "General check-up and consultation"
+    },
+    "laboratory": {
+      "title": "Laboratory",
+      "description": "Medical tests and analyses"
+    },
+    "xray": {
+      "title": "X-Ray",
+      "description": "Diagnostic services"
+    },
+    "dental": {
+      "title": "Dental",
+      "description": "Dental treatment"
+    },
+    "ophthalmology": {
+      "title": "Ophthalmology",
+      "description": "Eye disease treatment"
+    },
+    "emergency": {
+      "title": "Emergency",
+      "description": "24/7 emergency care"
+    }
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "A wide range of medical services for your health",
+    "items": {
+      "cardiology": {
+        "title": "Cardiology",
+        "description": "Diagnosis and treatment of cardiovascular diseases"
+      },
+      "therapy": {
+        "title": "Therapy",
+        "description": "Comprehensive examination and treatment of internal organs"
+      },
+      "pediatrics": {
+        "title": "Pediatrics",
+        "description": "Healthcare for children from birth to adulthood"
+      },
+      "ophthalmology": {
+        "title": "Ophthalmology",
+        "description": "Diagnosis and treatment of eye diseases"
+      },
+      "laboratory": {
+        "title": "Laboratory",
+        "description": "Comprehensive medical tests and research"
+      },
+      "vaccination": {
+        "title": "Vaccination",
+        "description": "Prevention of infectious diseases"
+      },
+      "surgery": {
+        "title": "Surgery",
+        "description": "Modern surgical interventions"
+      },
+      "neurology": {
+        "title": "Neurology",
+        "description": "Treatment of nervous system diseases"
+      },
+      "orthopedics": {
+        "title": "Orthopedics",
+        "description": "Musculoskeletal system diseases"
+      },
+      "gynecology": {
+        "title": "Gynecology",
+        "description": "Women's health and childbirth"
+      },
+      "generalPractice": {
+        "title": "General Practice",
+        "description": "Examination and treatment of internal diseases"
+      },
+      "ent": {
+        "title": "ENT",
+        "description": "Ear, nose, and throat diseases"
+      }
+    },
+    "categories": {
+      "all": "All",
+      "treatment": "Treatment",
+      "diagnostics": "Diagnostics",
+      "prevention": "Prevention"
+    },
+    "cta": {
+      "title": "Want to book an appointment?",
+      "description": "Contact our specialists by phone or through the online form.",
+      "online": "Online booking",
+      "phone": "+996 (312) 62-64-91"
+    }
+  },
+  "advantages": {
+    "title": "Our Advantages",
+    "experiencedDoctors": {
+      "title": "Experienced Doctors",
+      "description": "Specialists with years of experience"
+    },
+    "modernEquipment": {
+      "title": "Modern Equipment",
+      "description": "Diagnosis and treatment with latest generation devices"
+    },
+    "affordablePrices": {
+      "title": "Affordable Prices",
+      "description": "Below market prices thanks to government support"
+    },
+    "comprehensiveCare": {
+      "title": "Full Service Cycle",
+      "description": "From diagnosis to rehabilitation in one institution"
+    }
+  },
+  "news": {
+    "title": "Latest News",
+    "allNews": "All News",
+    "readMore": "Read More",
+    "searchPlaceholder": "Search news...",
+    "notFound": "News not found",
+    "backToNews": "Back to news",
+    "share": "Share",
+    "relatedNews": "Related News",
+    "categories": {
+      "all": "All",
+      "technology": "Technology",
+      "event": "Events",
+      "renovation": "Renovation",
+      "education": "Education"
+    }
+  },
+  "doctors": {
+    "title": "Our Doctors",
+    "subtitle": "Team of experienced specialists of our clinic",
+    "searchPlaceholder": "Search doctor or specialty...",
+    "experience": "Experience",
+    "notFound": "Doctors not found",
+    "allSpecialties": "All"
+  },
+  "about": {
+    "title": "About the Clinic",
+    "subtitle": "Modern multi-profile hospital with a rich history",
+    "description": "State Institution Clinical Hospital under the Administration of the President of the KR is a modern medical institution providing a wide range of high-quality medical services for adults and children.",
+    "services": {
+      "emergency": {
+        "title": "Emergency and Hospital 24/7",
+        "description": "Round-the-clock emergency medical care and inpatient treatment."
+      },
+      "surgery": {
+        "title": "Various Types of Surgery",
+        "description": "Modern operating rooms, experienced surgeons and a full range of surgical interventions."
+      },
+      "hospitalization": {
+        "title": "209-Bed Hospital and Intensive Care",
+        "description": "Comfortable conditions, individual care, intensive care unit."
+      },
+      "polyclinic": {
+        "title": "Polyclinic",
+        "description": "Consultations of specialists in various fields, preventive examinations."
+      },
+      "diagnostics": {
+        "title": "Functional Diagnostics and Laboratory Tests",
+        "description": "Modern equipment for accurate diagnostics, wide range of laboratory research."
+      },
+      "programs": {
+        "title": "Comprehensive Medical Surveillance Programs",
+        "description": "Pregnancy management, check-ups for adults and children, prevention."
+      }
+    },
+    "advantagesTitle": "Our Advantages",
+    "advantages": {
+      "quality": {
+        "title": "High Quality",
+        "description": "Modern equipment and latest treatment methods"
+      },
+      "experience": {
+        "title": "Experienced Doctors",
+        "description": "Team of professionals with years of experience"
+      },
+      "comfort": {
+        "title": "Comfort",
+        "description": "Cozy wards and modern infrastructure"
+      },
+      "precision": {
+        "title": "Precision",
+        "description": "High-precision diagnostics and individual approach"
+      }
+    },
+    "finalMessage": "We care about the health and well-being of each patient, providing a high level of medical service, individual approach and comfort at all stages of treatment and diagnostics."
+  },
+  "contact": {
+    "title": "Contacts",
+    "subtitle": "Contact us in a way convenient for you",
+    "info": "Contact Information",
+    "address": {
+      "title": "Address",
+      "country": "Kyrgyz Republic",
+      "full": "Bishkek, Kievskaya str., 110"
+    },
+    "phones": {
+      "title": "Phones",
+      "registry": "Registry",
+      "reception": "Reception",
+      "emergency": "Ambulance"
+    },
+    "email": {
+      "title": "Email"
+    },
+    "workingHours": {
+      "title": "Working Hours",
+      "polyclinic": "Polyclinic",
+      "weekdays": "Mon-Fri: 8:00 - 18:00",
+      "saturday": "Sat: 9:00 - 15:00",
+      "hospital": "Hospital",
+      "roundTheClock": "round the clock"
+    },
+    "form": {
+      "title": "Feedback",
+      "name": "Your name",
+      "namePlaceholder": "Enter your name",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "phone": "Phone",
+      "phonePlaceholder": "+996 (___) ___-___",
+      "message": "Message",
+      "messagePlaceholder": "Write your message...",
+      "submit": "Send message",
+      "submitting": "Sending...",
+      "success": "Message sent!"
+    },
+    "map": {
+      "title": "How to find us",
+      "description": "We are located in the city center. Easy to reach by public transport or private car.",
+      "direction": "Get directions"
+    }
+  },
+  "appointment": {
+    "title": "Book Appointment",
+    "subtitle": "Make an appointment with our specialists",
+    "form": {
+      "title": "Appointment Form",
+      "description": "Please fill out the form below",
+      "name": "Full Name",
+      "namePlaceholder": "Enter your name",
+      "phone": "Phone",
+      "phonePlaceholder": "+996 (___) ___-___",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "doctor": "Select Doctor",
+      "doctorPlaceholder": "Choose a doctor",
+      "date": "Date",
+      "time": "Time",
+      "timePlaceholder": "Select time",
+      "message": "Additional Notes",
+      "messagePlaceholder": "Describe your complaint or request...",
+      "submit": "Book Appointment",
+      "submitting": "Sending..."
+    },
+    "success": {
+      "title": "Appointment Confirmed!",
+      "message": "We will contact you shortly. Please check your phone.",
+      "info": "To cancel or change, call: +996 (312) 62-64-91"
+    },
+    "info": {
+      "phone": "By phone",
+      "phoneValue": "+996 (312) 62-64-91",
+      "hours": "Working hours",
+      "hoursValue": "Mon-Sat: 8:00-18:00",
+      "address": "Address",
+      "addressValue": "Bishkek, Kievskaya str. 110"
+    },
+    "important": {
+      "title": "Important Information",
+      "description": "After submitting the application, our team will contact you. Please make sure the phone number is correct."
+    }
+  },
+  "patientInfo": {
+    "title": "Important Information for Patients",
+    "subtitle": "Working hours and contacts of main departments",
+    "departments": {
+      "registrationBudget": {
+        "title": "Polyclinic Registry",
+        "schedule": "7:30 - 17:00",
+        "days": "Mon-Sat",
+        "weekend": "Sunday: Closed"
+      },
+      "registrationPaid": {
+        "title": "OGPMU Registry",
+        "schedule": "7:30 - 17:00",
+        "days": "Mon-Sat",
+        "weekend": "Sunday: Closed"
+      },
+      "emergency": {
+        "title": "Ambulance",
+        "schedule": "24/7",
+        "days": "Daily"
+      },
+      "admission": {
+        "title": "Admission Department",
+        "schedule": "7:30 - 14:00",
+        "days": "Mon-Sat",
+        "weekend": "Sunday: Closed"
+      }
+    },
+    "contact": {
+      "title": "Contacts and Address",
+      "address": "Bishkek, Kievskaya str., 110",
+      "importantNote": "In emergency situations, call the ambulance at the specified number"
+    }
+  },
+  "footer": {
+    "contacts": "Contacts",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "workingHours": "Working Hours",
+    "polyclinic": "Polyclinic",
+    "hospital": "Hospital",
+    "emergency": "Ambulance",
+    "quickLinks": "Quick Links",
+    "followUs": "Follow Us",
+    "stateInstitution": "State Institution",
+    "copyright": "Clinical Hospital under the Administration of the President of the KR. All rights reserved."
+  },
+  "specialties": {
+    "cardiology": "Cardiology",
+    "therapy": "Therapy",
+    "surgery": "Surgery",
+    "pediatrics": "Pediatrics",
+    "orthopedics": "Orthopedics",
+    "ophthalmology": "Ophthalmology",
+    "neurology": "Neurology",
+    "gynecology": "Gynecology",
+    "generalPractice": "General Practice",
+    "ent": "ENT",
+    "anesthesiology": "Anesthesiology",
+    "dermatology": "Dermatology",
+    "endocrinology": "Endocrinology",
+    "urology": "Urology",
+    "radiology": "Radiology"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "back": "Back",
+    "search": "Search",
+    "notFound": "Not found",
+    "pageNotFound": "Page not found",
+    "goHome": "Go to homepage",
+    "all": "All"
+  }
+}
