@@ -16,22 +16,16 @@ const routes: RouteRecordRaw[] = [
     meta: { titleKey: 'nav.about' },
   },
   {
-    path: '/doctors',
-    name: 'doctors',
-    component: () => import('@/views/DoctorsView.vue'),
-    meta: { titleKey: 'nav.doctors' },
-  },
-  {
-    path: '/doctors/:id',
-    name: 'doctorDetail',
-    component: () => import('@/views/DoctorDetailView.vue'),
-    meta: { titleKey: 'nav.doctors' },
-  },
-  {
     path: '/services',
     name: 'services',
     component: () => import('@/views/ServicesView.vue'),
     meta: { titleKey: 'nav.services' },
+  },
+  {
+    path: '/prices',
+    name: 'prices',
+    component: () => import('@/views/PricesView.vue'),
+    meta: { titleKey: 'nav.prices' },
   },
   {
     path: '/gallery',
@@ -67,7 +61,19 @@ const routes: RouteRecordRaw[] = [
     path: '/faq',
     name: 'faq',
     component: () => import('@/views/FaqView.vue'),
-    meta: { titleKey: 'nav.contacts' },
+    meta: { titleKey: 'nav.faq' },
+  },
+  {
+    path: '/information',
+    name: 'information',
+    component: () => import('@/views/InformationView.vue'),
+    meta: { titleKey: 'nav.information' },
+  },
+  {
+    path: '/vacancies',
+    name: 'vacancies',
+    component: () => import('@/views/VacanciesView.vue'),
+    meta: { titleKey: 'nav.vacancies' },
   },
   {
     path: '/news',

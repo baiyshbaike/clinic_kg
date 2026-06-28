@@ -69,6 +69,10 @@ const getCategoryLabel = (catId: string) => {
                   <path v-else-if="service.icon === 'flask'" d="M9 3h6M10 9V3M14 9V3M6 21h12M10 9h4l2 12H8L10 9z"/>
                   <path v-else-if="service.icon === 'syringe'" d="m18 2 4 4M7.5 13.5 16 5M16 5l-2.5 2.5M16 5l2.5-2.5M2 22l4-4M22 2l-4 4"/>
                   <path v-else-if="service.icon === 'scissors'" d="M6 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                  <path v-else-if="service.icon === 'tooth'" d="M12 2C8 2 5 5 5 8c0 2 1 3 2 4l1 4c0 2 1 4 4 4s4-2 4-4l1-4c1-1 2-2 2-4 0-3-3-6-7-6Z"/>
+                  <path v-else-if="service.icon === 'bed'" d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9"/>
+                  <path v-else-if="service.icon === 'ambulance'" d="M10 18H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8M2 14h4M10 14h4M8 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM16 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
+                  <path v-else-if="service.icon === 'scan'" d="M7 2v4M17 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/>
                   <path v-else-if="service.icon === 'brain'" d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
                   <path v-else-if="service.icon === 'bone'" d="M18.2 5.8a2.4 2.4 0 0 1 0 3.4l-4 4a2.4 2.4 0 0 1-3.4 0 2.4 2.4 0 0 1 0-3.4l4-4a2.4 2.4 0 0 1 3.4 0Z"/>
                   <path v-else-if="service.icon === 'stethoscope'" d="M11 2v2M5 2v2M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1M8 15a6 6 0 0 0 12 0v-3M20 10a2 2 0 1 1-4 0"/>

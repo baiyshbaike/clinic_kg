@@ -1,150 +1,108 @@
-import abakirova from '@/assets/images/doctors/abakirova.jpeg'
 import abdyldaeva from '@/assets/images/doctors/abdyldaeva.jpeg'
 import abduraimov from '@/assets/images/doctors/abduraimov.jpeg'
 import akmatova from '@/assets/images/doctors/akmatova.jpeg'
 import amankulov from '@/assets/images/doctors/amankulov.jpeg'
-import bubusaira from '@/assets/images/doctors/bubusaira.jpeg'
 import karataev from '@/assets/images/doctors/karataev.jpeg'
-import keneeva from '@/assets/images/doctors/keneeva.jpeg'
 import mamatalieva from '@/assets/images/doctors/mamatalieva.jpeg'
 import nazarkulova from '@/assets/images/doctors/nazarkulova.jpeg'
 import prem from '@/assets/images/doctors/prem.jpeg'
-import sherimbekova from '@/assets/images/doctors/sherimbekova.jpeg'
-import tashbulatova from '@/assets/images/doctors/tashbulatova.jpeg'
-import usupova from '@/assets/images/doctors/usupova.jpeg'
-import yacuba from '@/assets/images/doctors/yacuba.jpeg'
 import doctorDefault from '@/assets/images/doctors/doctor-default.png'
 
 export interface Doctor {
   id: number
   name: string
   specialtyKey: string
-  image: typeof doctorDefault
+  image: string
   experience: string
+  category?: string
+  schedule?: string
+  department?: string
+  specialization?: string[]
 }
 
 export const doctors: Doctor[] = [
   {
     id: 1,
-    name: 'Айгуль Абакирова',
-    specialtyKey: 'cardiology',
-    image: abakirova,
-    experience: '15+',
+    name: 'Акматова Райхан Орозакуновна',
+    specialtyKey: 'therapy',
+    image: akmatova,
+    experience: '45 лет',
+    category: 'Врач высшей категории',
+    department: 'ОГПМУ',
   },
   {
     id: 2,
-    name: 'Нургуль Абдылдаева',
+    name: 'Кумар Прем',
     specialtyKey: 'therapy',
-    image: abdyldaeva,
-    experience: '12+',
+    image: prem,
+    experience: '25 лет',
+    category: 'Высшая категория',
+    schedule: 'Пн-Сб: 10:00-13:30',
+    department: 'ОГПМУ',
   },
   {
     id: 3,
-    name: 'Руслан Абдураимов',
-    specialtyKey: 'surgery',
-    image: abduraimov,
-    experience: '18+',
+    name: 'Абдылдаева С.М.',
+    specialtyKey: 'therapy',
+    image: abdyldaeva,
+    experience: '41 лет',
+    category: 'Высшая категория',
+    schedule: 'Пн-Ср-Пт: 9:00-12:15',
+    department: 'ОГПМУ',
   },
   {
     id: 4,
-    name: 'Чынара Акматова',
-    specialtyKey: 'pediatrics',
-    image: akmatova,
-    experience: '10+',
+    name: 'Назаркулова Б.Т.',
+    specialtyKey: 'psychotherapy',
+    image: nazarkulova,
+    experience: '49 года',
+    schedule: 'Вт-Чт: 7:30-14:00',
+    department: 'ОГПМУ',
   },
   {
     id: 5,
-    name: 'Бакыт Аманкулов',
-    specialtyKey: 'orthopedics',
-    image: amankulov,
-    experience: '14+',
+    name: 'Абдураимов Д.А.',
+    specialtyKey: 'urology',
+    image: abduraimov,
+    experience: '14 лет',
+    schedule: 'Вт-Чт: 7:30-14:00',
+    department: 'ОГПМУ',
   },
   {
     id: 6,
-    name: 'Айша Бубусаира',
-    specialtyKey: 'ophthalmology',
-    image: bubusaira,
-    experience: '11+',
+    name: 'Маматалиева Н.М.',
+    specialtyKey: 'gynecology',
+    image: mamatalieva,
+    experience: '4 года',
+    schedule: 'Пн-Ср-Пт: 10:00-16:00',
+    department: 'ОГПМУ',
   },
   {
     id: 7,
-    name: 'Нурлан Каратаев',
-    specialtyKey: 'neurology',
+    name: 'Каратаев М.А.',
+    specialtyKey: 'dentistry',
     image: karataev,
-    experience: '16+',
+    experience: '33 года',
+    department: 'ОГПМУ',
   },
   {
     id: 8,
-    name: 'Айжан Кенеева',
-    specialtyKey: 'gynecology',
-    image: keneeva,
-    experience: '13+',
-  },
-  {
-    id: 9,
-    name: 'Гульнур Маматалиева',
-    specialtyKey: 'generalPractice',
-    image: mamatalieva,
-    experience: '17+',
-  },
-  {
-    id: 10,
-    name: 'Надежда Назаркулова',
     specialtyKey: 'ent',
-    image: nazarkulova,
-    experience: '12+',
-  },
-  {
-    id: 11,
-    name: 'Сергей Прем',
-    specialtyKey: 'anesthesiology',
-    image: prem,
-    experience: '20+',
-  },
-  {
-    id: 12,
-    name: 'Аида Шеримбекова',
-    specialtyKey: 'dermatology',
-    image: sherimbekova,
-    experience: '9+',
-  },
-  {
-    id: 13,
-    name: 'Жанна Ташбулатова',
-    specialtyKey: 'endocrinology',
-    image: tashbulatova,
-    experience: '14+',
-  },
-  {
-    id: 14,
-    name: 'Батма Усупова',
-    specialtyKey: 'urology',
-    image: usupova,
-    experience: '11+',
-  },
-  {
-    id: 15,
-    name: 'Олег Якуба',
-    specialtyKey: 'radiology',
-    image: yacuba,
-    experience: '19+',
+    name: 'Аманкулов У.К.',
+    image: amankulov || doctorDefault,
+    experience: '21 год',
+    category: 'Первая категория',
+    schedule: 'Вт-Сб: 8:00-15:00',
+    department: 'ОГПМУ',
+    specialization: ['Эндоскопия ЛОР-органов', 'Слухопротезирование', 'Хирургия носа'],
   },
 ]
 
 export const specialtyKeys = [
-  'cardiology',
   'therapy',
-  'surgery',
-  'pediatrics',
-  'orthopedics',
-  'ophthalmology',
-  'neurology',
-  'gynecology',
-  'generalPractice',
-  'ent',
-  'anesthesiology',
-  'dermatology',
-  'endocrinology',
+  'psychotherapy',
   'urology',
-  'radiology',
+  'gynecology',
+  'dentistry',
+  'ent',
 ]

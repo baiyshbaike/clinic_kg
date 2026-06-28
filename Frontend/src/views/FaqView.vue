@@ -1,52 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { patientFaq } from '@/data/information'
 
 const { t } = useI18n()
 const openFaq = ref<number | null>(null)
-
-const faqs = [
-  {
-    id: 1,
-    question: 'Как записаться на прием?',
-    answer: 'Вы можете записаться на прием по телефону +996 (312) 62-64-91 или через форму онлайн-записи на нашем сайте. Также вы можете лично обратиться в регистратуру поликлиники.',
-  },
-  {
-    id: 2,
-    question: 'Какие документы нужны для посещения?',
-    answer: 'Для посещения вам понадобится: паспорт или документ, удостоверяющий личность, полис ОМС (при наличии), направление от врача (если есть).',
-  },
-  {
-    id: 3,
-    question: 'Как работает скорая помощь?',
-    answer: 'Скорая помощь работает круглосуточно. Для вызова скорой помощи звоните по номеру 103. При экстренных ситуациях вы можете обратиться в приемное отделение больницы.',
-  },
-  {
-    id: 4,
-    question: 'Какие анализы можно сдать?',
-    answer: 'В нашей лаборатории вы можете сдать широкий спектр анализов: общий анализ крови, биохимические анализы, анализы мочи, гормональные исследования, онкомаркеры и многие другие.',
-  },
-  {
-    id: 5,
-    question: 'Проводятся ли операции?',
-    answer: 'Да, в нашей клинике проводятся различные виды операций: плановые и экстренные операции, малоинвазивные вмешательства, эндоскопические операции.',
-  },
-  {
-    id: 6,
-    question: 'Как записаться на УЗИ или рентген?',
-    answer: 'Для записи на УЗИ или рентген вы можете обратиться в регистратуру или записаться онлайн. При себе иметь направление от врача.',
-  },
-  {
-    id: 7,
-    question: 'Какие способы оплаты принимаются?',
-    answer: 'Мы принимаем оплату наличными, банковскими картами, а также по квитанции через банк. Для граждан КР доступна оплата по полису ОМС.',
-  },
-  {
-    id: 8,
-    question: 'Есть ли парковка?',
-    answer: 'Да, на территории больницы есть бесплатная парковка для пациентов. Парковка расположена у главного входа в поликлинику.',
-  },
-]
 
 const toggleFaq = (id: number) => {
   openFaq.value = openFaq.value === id ? null : id
@@ -57,9 +16,9 @@ const toggleFaq = (id: number) => {
   <div>
     <div class="gradient-secondary text-white py-16">
       <div class="container-custom">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ t('contact.title') }}</h1>
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ t('nav.faq') }}</h1>
         <p class="text-xl opacity-90 max-w-3xl">
-          {{ t('contact.subtitle') }}
+          {{ t('information.subtitle') }}
         </p>
       </div>
     </div>
@@ -69,15 +28,15 @@ const toggleFaq = (id: number) => {
         <div class="max-w-3xl mx-auto">
           <div class="space-y-4">
             <div
-              v-for="faq in faqs"
-              :key="faq.id"
+              v-for="(faq, index) in patientFaq"
+              :key="faq.question"
               class="rounded-2xl border-2 overflow-hidden transition-colors"
               :class="[
-                openFaq === faq.id ? 'border-primary' : 'border-border'
+                openFaq === index ? 'border-primary' : 'border-border'
               ]"
             >
               <button
-                @click="toggleFaq(faq.id)"
+                @click="toggleFaq(index)"
                 class="w-full px-6 py-4 text-left flex items-center justify-between gap-4 hover:bg-muted/30 transition-colors"
               >
                 <span class="font-semibold text-foreground">{{ faq.question }}</span>
@@ -93,7 +52,7 @@ const toggleFaq = (id: number) => {
                   stroke-linejoin="round"
                   class="flex-shrink-0 transition-transform duration-300"
                   :class="[
-                    openFaq === faq.id ? 'rotate-180' : ''
+                    openFaq === index ? 'rotate-180' : ''
                   ]"
                 >
                   <path d="m6 9 6 6 6-6"/>
@@ -101,7 +60,7 @@ const toggleFaq = (id: number) => {
               </button>
               <Transition name="faq">
                 <div
-                  v-if="openFaq === faq.id"
+                  v-if="openFaq === index"
                   class="px-6 pb-4 text-muted-foreground"
                 >
                   {{ faq.answer }}
@@ -117,7 +76,7 @@ const toggleFaq = (id: number) => {
       <div class="container-custom text-center">
         <h2 class="text-2xl font-bold mb-4 text-secondary">{{ t('contact.form.title') }}</h2>
         <p class="text-muted-foreground mb-8 max-w-2xl mx-auto">
-          {{ t('contact.form.description') }}
+          {{ t('contact.subtitle') }}
         </p>
         <RouterLink to="/contact" class="btn-primary inline-flex items-center gap-2 no-underline">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

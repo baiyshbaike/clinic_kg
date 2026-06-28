@@ -1,54 +1,9 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
+import { hospitalData } from '@/data/clinicStructure'
 
 const { t } = useI18n()
-
-const departments = [
-  {
-    id: 'surgery',
-    titleKey: 'specialties.surgery',
-    description: 'Современные хирургические вмешательства',
-    icon: 'scissors',
-  },
-  {
-    id: 'cardiology',
-    titleKey: 'specialties.cardiology',
-    description: 'Стационарное лечение заболеваний сердца',
-    icon: 'heart',
-  },
-  {
-    id: 'therapy',
-    titleKey: 'specialties.therapy',
-    description: 'Круглосуточное стационарное лечение',
-    icon: 'bed',
-  },
-  {
-    id: 'neurology',
-    titleKey: 'specialties.neurology',
-    description: 'Лечение заболеваний нервной системы',
-    icon: 'brain',
-  },
-  {
-    id: 'pediatrics',
-    titleKey: 'specialties.pediatrics',
-    description: 'Стационарное лечение детей',
-    icon: 'baby',
-  },
-  {
-    id: 'orthopedics',
-    titleKey: 'specialties.orthopedics',
-    description: 'Лечение заболеваний опорно-двигательного аппарата',
-    icon: 'bone',
-  },
-]
-
-const features = [
-  { icon: 'bed', count: '209', label: 'Коек' },
-  { icon: 'doctor', count: '50+', label: 'Врачей' },
-  { icon: 'operation', count: '1000+', label: 'Операций/год' },
-  { icon: 'icu', count: '24/7', label: 'Реанимация' },
-]
 </script>
 
 <template>
@@ -62,73 +17,96 @@ const features = [
           </svg>
           {{ t('nav.home') }}
         </RouterLink>
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ t('structure.hospital.title') }}</h1>
-        <p class="text-xl opacity-90 max-w-3xl">
-          {{ t('structure.hospital.description') }}
-        </p>
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ hospitalData.title }}</h1>
+        <p class="text-xl opacity-90 max-w-3xl">{{ hospitalData.subtitle }}</p>
       </div>
     </div>
 
     <section class="py-16">
       <div class="container-custom">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-          <div
-            v-for="feature in features"
-            :key="feature.label"
-            class="text-center p-6 rounded-2xl bg-muted/30"
+        <div class="max-w-5xl mx-auto mb-12">
+          <h2 class="text-3xl font-bold mb-6 text-secondary">{{ hospitalData.introTitle }}</h2>
+          <p
+            v-for="paragraph in hospitalData.intro"
+            :key="paragraph"
+            class="text-lg text-muted-foreground mb-4 leading-relaxed"
           >
-            <div class="text-4xl font-bold text-primary mb-2">{{ feature.count }}</div>
-            <div class="text-muted-foreground">{{ feature.label }}</div>
-          </div>
+            {{ paragraph }}
+          </p>
         </div>
 
-        <h2 class="text-3xl font-bold text-center mb-12 text-secondary">
-          {{ t('hospital.departments') }}
-        </h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div
+            v-for="stat in hospitalData.stats"
+            :key="stat.label"
+            class="text-center p-6 rounded-2xl bg-muted/30 border-2 border-transparent hover:border-primary/40 transition-colors"
+          >
+            <div class="text-3xl font-bold text-primary mb-1">{{ stat.value }}</div>
+            <div class="font-semibold text-secondary">{{ stat.label }}</div>
+            <p class="text-sm text-muted-foreground mt-2">{{ stat.description }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <section class="py-16 bg-muted/30">
+      <div class="container-custom">
+        <h2 class="text-3xl font-bold text-center mb-12 text-secondary">Наши отделения</h2>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div
-            v-for="dept in departments"
+          <article
+            v-for="dept in hospitalData.departments"
             :key="dept.id"
-            class="rounded-2xl border-2 border-border p-6 hover:border-primary/50 transition-all duration-300 hover:shadow-lg"
+            class="rounded-2xl border-2 border-border bg-white p-6 hover:border-primary/50 transition-all duration-300 hover:shadow-lg"
           >
-            <div class="w-12 h-12 rounded-full gradient-primary flex items-center justify-center mb-4">
-              <svg v-if="dept.icon === 'scissors'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="6" cy="6" r="3"/>
-                <path d="M8.12 8.12 12 12"/>
-                <path d="M20 4 8.12 15.88"/>
-                <circle cx="6" cy="18" r="3"/>
-                <path d="M14.8 14.8 20 20"/>
-              </svg>
-              <svg v-else-if="dept.icon === 'heart'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-              </svg>
-              <svg v-else-if="dept.icon === 'bed'" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M2 4v16"/>
-                <path d="M2 8h18a2 2 0 0 1 2 2v10"/>
-                <path d="M2 17h20"/>
-                <path d="M6 8v9"/>
-              </svg>
-              <svg v-else xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="M12 6v6l4 2"/>
-              </svg>
+            <div class="flex items-start justify-between gap-4 mb-4">
+              <h3 class="text-xl font-semibold text-secondary">{{ dept.name }}</h3>
+              <span class="shrink-0 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-semibold">
+                {{ dept.beds }}
+              </span>
             </div>
-            <h3 class="text-xl font-semibold mb-2 text-secondary">{{ t(dept.titleKey) }}</h3>
-            <p class="text-muted-foreground text-sm">{{ dept.description }}</p>
-          </div>
+            <p class="text-muted-foreground text-sm mb-4">{{ dept.description }}</p>
+            <ul class="space-y-2 text-sm text-muted-foreground">
+              <li v-for="feature in dept.features" :key="feature" class="flex items-start gap-2">
+                <span class="text-primary mt-1">✓</span>
+                <span>{{ feature }}</span>
+              </li>
+            </ul>
+          </article>
         </div>
+      </div>
+    </section>
 
-        <div class="mt-12 text-center">
-          <RouterLink to="/appointment" class="btn-primary inline-flex items-center gap-2 no-underline">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
-              <line x1="16" x2="16" y1="2" y2="6"/>
-              <line x1="8" x2="8" y1="2" y2="6"/>
-              <line x1="3" x2="21" y1="10" y2="10"/>
-            </svg>
-            {{ t('appointment.form.submit') }}
-          </RouterLink>
+    <section class="py-16">
+      <div class="container-custom">
+        <div class="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          <div>
+            <h2 class="text-3xl font-bold mb-8 text-secondary">Условия пребывания</h2>
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div
+                v-for="condition in hospitalData.conditions"
+                :key="condition.title"
+                class="rounded-2xl bg-white border border-border p-5 card-shadow"
+              >
+                <h3 class="font-semibold text-lg mb-2 text-secondary">{{ condition.title }}</h3>
+                <p class="text-sm text-muted-foreground">{{ condition.items[0] }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-2xl bg-muted/30 border-l-4 border-l-primary p-8">
+            <h2 class="text-3xl font-bold mb-8 text-secondary">Правила госпитализации</h2>
+            <div class="space-y-8">
+              <div v-for="rule in hospitalData.hospitalizationRules" :key="rule.title">
+                <h3 class="font-semibold text-lg mb-3">{{ rule.title }}</h3>
+                <ul class="space-y-2 text-muted-foreground">
+                  <li v-for="item in rule.items" :key="item" class="flex items-start gap-2">
+                    <span class="text-primary mt-1">•</span>
+                    <span>{{ item }}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

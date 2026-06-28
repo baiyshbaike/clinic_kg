@@ -10,11 +10,13 @@ const isSticky = ref(false)
 const navItems = [
   { labelKey: 'nav.home', href: '/' },
   { labelKey: 'nav.about', href: '/about' },
-  { labelKey: 'nav.doctors', href: '/doctors' },
   { labelKey: 'nav.services', href: '/services' },
+  { labelKey: 'nav.prices', href: '/prices' },
   { labelKey: 'nav.gallery', href: '/gallery' },
   { labelKey: 'nav.renovation', href: '/renovation' },
   { labelKey: 'nav.news', href: '/news' },
+  { labelKey: 'nav.information', href: '/information' },
+  { labelKey: 'nav.vacancies', href: '/vacancies' },
   { labelKey: 'nav.faq', href: '/faq' },
   { labelKey: 'nav.contacts', href: '/contact' },
 ]

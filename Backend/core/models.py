@@ -1,21 +1,21 @@
-# import uuid
-# from datetime import datetime
-# import random
-# import string
-#
-# from django.core.exceptions import ValidationError
-# from django.core.validators import FileExtensionValidator
-# from django.utils import timezone
-# from django.db import models
-# from ckeditor_uploader.fields import RichTextUploadingField
-# from django.db.models.signals import post_save, post_delete
-# from django.dispatch import receiver
-# from multiselectfield import MultiSelectField
-# from django.utils.text import slugify
-# from django.utils.translation import gettext_lazy as _
-# from imagekit.models import ImageSpecField
-# from imagekit.processors import ResizeToFill
-#
+import uuid
+from datetime import datetime
+import random
+import string
+
+from django.core.exceptions import ValidationError
+from django.core.validators import FileExtensionValidator
+from django.utils import timezone
+from django.db import models
+from ckeditor_uploader.fields import RichTextUploadingField
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
+from multiselectfield import MultiSelectField
+from django.utils.text import slugify
+from django.utils.translation import gettext_lazy as _
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
+
 # def get_upload_name(instance, filename):
 #     news_slug = instance.news.slug
 #     return f'news_images/{news_slug}/{filename}'
@@ -23,112 +23,112 @@
 #
 # def get_upload_name_management(instance, filename):
 #     return f"management_images/{instance.pk}/{filename}"
-#
-#
+
+
 # def get_upload_name_image(instance, filename):
 #     imageId = instance.image_galery.slug
 #     return f"image_galery/{imageId}/{filename}"
-#
-# def generate_random_string(length=10):
-#     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
-#
-# class SingletonModel(models.Model):
-#     class Meta:
-#         abstract = True
-#
-#     def save(self, *args, **kwargs):
-#         self.pk = 1
-#         super(SingletonModel, self).save(*args, **kwargs)
-#
-#     def delete(self, *args, **kwargs):
-#         pass
-#
-#     @classmethod
-#     def load(cls):
-#         obj, created = cls.objects.get_or_create(pk=1)
-#         return obj
-#
-# class MainModel(models.Model):
-#     title_kg = models.CharField(verbose_name=_('Title in Kyrgyz'), max_length=255, null=True, blank=True, help_text=_('Enter the title in Kyrgyz language'))
-#     title_ru = models.CharField(verbose_name=_('Title in Russian'), max_length=255, null=True, blank=True, help_text=_('Enter the title in Russian language'))
-#     title_en = models.CharField(verbose_name=_('Title in English'), max_length=255, null=True, blank=True, help_text=_('Enter the title in English language'))
-#     created = models.DateTimeField(verbose_name=_('Created date'), blank=True, null=True, default=timezone.now)
-#     status = models.BooleanField(default=True, verbose_name=_('Status'), help_text=_('Show status'))
-#     slug = models.SlugField(max_length=255, null=True, blank=True, db_index=True, editable=False, unique=True)
-#
-#     def save(self, *args, **kwargs):
-#         if not self.slug:
-#             random_string = generate_random_string(length=16)
-#             str_to_slugify = f'{random_string}_{datetime.now().strftime("%d_%m_%Y_%H_%M_%S")}'
-#             self.slug = slugify(str_to_slugify)
-#         super(MainModel, self).save(*args, **kwargs)
-#
-#     def __str__(self):
-#         return self.title_ru or self.title_kg or self.title_en or str(self.pk) or "No Title"
-#
-#
-# class BaseModel(MainModel):
-#     content_kg = RichTextUploadingField(verbose_name=_('Content in Kyrgyz'), null=True, blank=True, help_text=_('Enter the content in Kyrgyz language'))
-#     content_ru = RichTextUploadingField(verbose_name=_('Content in Russian'), null=True, blank=True, help_text=_('Enter the content in Russian language'))
-#     content_en = RichTextUploadingField(verbose_name=_('Content in English'), null=True, blank=True, help_text=_('Enter the content in English language'))
-#
-#
-# class MainMenu (MainModel):
-#     order = models.PositiveIntegerField(verbose_name=_('Order'), help_text=_('Show the order'), null=True, blank=True, default=1)
-#
-#     class Meta:
-#         verbose_name = _('Main menu')
-#         verbose_name_plural = _('Main menu')
-#         ordering = ('order', 'id')
-#
-#
-# class MainMenuLinks(MainModel):
-#     order = models.PositiveIntegerField(default=1, verbose_name=_('Order'), help_text=_('Show the order'), null=True, blank=True)
-#     link = models.ForeignKey('PageUrls', related_name='main_link_to', verbose_name=_('Link of page'), null=True, blank=True, on_delete=models.SET_NULL, )
-#     main_menu = models.ForeignKey('Mainmenu', related_name='links', verbose_name=_('Main menu'), null=True, on_delete=models.SET_NULL, blank=True)
-#     on_footer_menu = models.BooleanField(default=False, verbose_name=_('Footer menu'), help_text=_('Display from the footer section'), null=True, blank=True)
-#
-#     class Meta:
-#         verbose_name = _('Main module')
-#         verbose_name_plural = _('Main module')
-#         ordering = ('order', 'id')
-#
-#
-# class PageUrls(models.Model):
-#     name = models.CharField(verbose_name=_('link'), blank=True, null=True)
-#     url = models.CharField(verbose_name=_('model url'), blank=True, null=True)
-#     page_slug = models.CharField(verbose_name=_('model slug'), blank=True, null=True)
-#     created = models.DateTimeField(verbose_name=_('Created date'), blank=True, null=True,default=timezone.now)
-#     status = models.BooleanField(default=True, verbose_name=_('Status'), help_text=_('Show status'))
-#     slug = models.SlugField(max_length=255, null=True, blank=True, db_index=True, editable=False)
-#
-#     def generate_random_string(self, length=10):
-#         return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
-#
-#     def save(self, *args, **kwargs):
-#         if not self.slug:
-#             random_string = self.generate_random_string(length=16)
-#             str_to_slugify = f'{random_string}_{datetime.now().strftime("%d_%m_%Y_%H_%M_%S")}'
-#             self.slug = slugify(str_to_slugify)
-#         super(PageUrls, self).save(*args, **kwargs)
-#
-#     def __str__(self):
-#         name = self.name or ""
-#         if len(name) > 50:
-#             return name[:50]
-#         return name or str(self.pk) or "No Name"
-#
-#     class Meta:
-#         verbose_name = _('A pointer to a page')
-#         verbose_name_plural = _('A pointer to a page')
-#
-#
-# class PageContent(BaseModel):
-#     page_url = models.OneToOneField(PageUrls,on_delete=models.SET_NULL, blank=True, null=True, editable=False)
-#
-#     class Meta:
-#         verbose_name = _('Page')
-#         verbose_name_plural = _('Pages')
+
+def generate_random_string(length=10):
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+
+class SingletonModel(models.Model):
+    class Meta:
+        abstract = True
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super(SingletonModel, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        pass
+
+    @classmethod
+    def load(cls):
+        obj, created = cls.objects.get_or_create(pk=1)
+        return obj
+
+class MainModel(models.Model):
+    title_kg = models.CharField(verbose_name=_('Title in Kyrgyz'), max_length=255, null=True, blank=True, help_text=_('Enter the title in Kyrgyz language'))
+    title_ru = models.CharField(verbose_name=_('Title in Russian'), max_length=255, null=True, blank=True, help_text=_('Enter the title in Russian language'))
+    title_en = models.CharField(verbose_name=_('Title in English'), max_length=255, null=True, blank=True, help_text=_('Enter the title in English language'))
+    created = models.DateTimeField(verbose_name=_('Created date'), blank=True, null=True, default=timezone.now)
+    status = models.BooleanField(default=True, verbose_name=_('Status'), help_text=_('Show status'))
+    slug = models.SlugField(max_length=255, null=True, blank=True, db_index=True, editable=False, unique=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            random_string = generate_random_string(length=16)
+            str_to_slugify = f'{random_string}_{datetime.now().strftime("%d_%m_%Y_%H_%M_%S")}'
+            self.slug = slugify(str_to_slugify)
+        super(MainModel, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title_ru or self.title_kg or self.title_en or str(self.pk) or "No Title"
+
+
+class BaseModel(MainModel):
+    content_kg = RichTextUploadingField(verbose_name=_('Content in Kyrgyz'), null=True, blank=True, help_text=_('Enter the content in Kyrgyz language'))
+    content_ru = RichTextUploadingField(verbose_name=_('Content in Russian'), null=True, blank=True, help_text=_('Enter the content in Russian language'))
+    content_en = RichTextUploadingField(verbose_name=_('Content in English'), null=True, blank=True, help_text=_('Enter the content in English language'))
+
+
+class MainMenu (MainModel):
+    order = models.PositiveIntegerField(verbose_name=_('Order'), help_text=_('Show the order'), null=True, blank=True, default=1)
+
+    class Meta:
+        verbose_name = _('Main menu')
+        verbose_name_plural = _('Main menu')
+        ordering = ('order', 'id')
+
+
+class MainMenuLinks(MainModel):
+    order = models.PositiveIntegerField(default=1, verbose_name=_('Order'), help_text=_('Show the order'), null=True, blank=True)
+    link = models.ForeignKey('PageUrls', related_name='main_link_to', verbose_name=_('Link of page'), null=True, blank=True, on_delete=models.SET_NULL, )
+    main_menu = models.ForeignKey('Mainmenu', related_name='links', verbose_name=_('Main menu'), null=True, on_delete=models.SET_NULL, blank=True)
+    on_footer_menu = models.BooleanField(default=False, verbose_name=_('Footer menu'), help_text=_('Display from the footer section'), null=True, blank=True)
+
+    class Meta:
+        verbose_name = _('Main module')
+        verbose_name_plural = _('Main module')
+        ordering = ('order', 'id')
+
+
+class PageUrls(models.Model):
+    name = models.CharField(verbose_name=_('link'), blank=True, null=True)
+    url = models.CharField(verbose_name=_('model url'), blank=True, null=True)
+    page_slug = models.CharField(verbose_name=_('model slug'), blank=True, null=True)
+    created = models.DateTimeField(verbose_name=_('Created date'), blank=True, null=True,default=timezone.now)
+    status = models.BooleanField(default=True, verbose_name=_('Status'), help_text=_('Show status'))
+    slug = models.SlugField(max_length=255, null=True, blank=True, db_index=True, editable=False)
+
+    def generate_random_string(self, length=10):
+        return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            random_string = self.generate_random_string(length=16)
+            str_to_slugify = f'{random_string}_{datetime.now().strftime("%d_%m_%Y_%H_%M_%S")}'
+            self.slug = slugify(str_to_slugify)
+        super(PageUrls, self).save(*args, **kwargs)
+
+    def __str__(self):
+        name = self.name or ""
+        if len(name) > 50:
+            return name[:50]
+        return name or str(self.pk) or "No Name"
+
+    class Meta:
+        verbose_name = _('A pointer to a page')
+        verbose_name_plural = _('A pointer to a page')
+
+
+class PageContent(BaseModel):
+    page_url = models.OneToOneField(PageUrls,on_delete=models.SET_NULL, blank=True, null=True, editable=False)
+
+    class Meta:
+        verbose_name = _('Page')
+        verbose_name_plural = _('Pages')
 #
 #
 # Management_CATEGORY = (

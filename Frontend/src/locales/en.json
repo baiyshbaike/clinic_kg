@@ -11,11 +11,13 @@
   "nav": {
     "home": "Home",
     "about": "About",
-    "doctors": "Doctors",
     "services": "Services",
+    "prices": "Prices",
     "gallery": "Gallery",
     "renovation": "Renovation",
     "news": "News",
+    "information": "Information",
+    "vacancies": "Vacancies",
     "faq": "FAQ",
     "contacts": "Contacts",
     "appointment": "Appointment"
@@ -325,6 +327,17 @@
       "description": "After submitting the application, our team will contact you. Please make sure the phone number is correct."
     }
   },
+  "information": {
+    "subtitle": "Useful information for patients"
+  },
+  "prices": {
+    "title": "Price List",
+    "subtitle": "Cost of medical services in our clinic",
+    "searchPlaceholder": "Search service or category...",
+    "notFound": "No services found",
+    "noteTitle": "Please note",
+    "note": "Service prices may change. For up-to-date information, call"
+  },
   "patientInfo": {
     "title": "Important Information for Patients",
     "subtitle": "Working hours and contacts of main departments",
@@ -427,12 +440,14 @@
   "specialties": {
     "cardiology": "Cardiology",
     "therapy": "Therapy",
+    "psychotherapy": "Psychotherapy",
     "surgery": "Surgery",
     "pediatrics": "Pediatrics",
     "orthopedics": "Orthopedics",
     "ophthalmology": "Ophthalmology",
     "neurology": "Neurology",
     "gynecology": "Gynecology",
+    "dentistry": "Dentistry",
     "generalPractice": "General Practice",
     "ent": "ENT",
     "anesthesiology": "Anesthesiology",
