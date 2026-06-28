@@ -88,6 +88,12 @@ const routes: RouteRecordRaw[] = [
     meta: { titleKey: 'nav.contacts' },
   },
   {
+    path: '/content',
+    name: 'content',
+    component: () => import('@/views/content/index.vue'),
+    meta: { titleKey: 'nav.content'}
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'notFound',
     component: () => import('@/views/NotFoundView.vue'),

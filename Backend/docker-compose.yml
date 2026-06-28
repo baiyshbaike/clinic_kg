@@ -26,6 +26,8 @@ services:
     restart: always
     env_file:
       - .env
+    environment:
+      DATABASE_ENGINE: postgres
     ports:
       - "127.0.0.1:8000:8000"
     volumes:
