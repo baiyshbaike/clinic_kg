@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 
-const { locale } = useI18n()
+const { locale, t } = useI18n()
+const route = useRoute()
 const isOpen = ref(false)
+const dropdownRef = ref<HTMLElement | null>(null)
 
 const languages = [
   { code: 'ru', label: 'Русский', flag: 'RU' },
@@ -18,6 +21,9 @@ const currentLanguage = computed(() => {
 const switchLanguage = (code: string) => {
   locale.value = code
   localStorage.setItem('clinic-language', code)
+  const titleKey = route.meta.titleKey as string | undefined
+  const baseTitle = t('header.clinicName')
+  document.title = titleKey ? `${t(titleKey)} | ${baseTitle}` : baseTitle
   isOpen.value = false
 }
 
@@ -28,10 +34,24 @@ const toggleDropdown = () => {
 const closeDropdown = () => {
   isOpen.value = false
 }
+
+const handleClickOutside = (event: MouseEvent) => {
+  if (dropdownRef.value && !dropdownRef.value.contains(event.target as Node)) {
+    closeDropdown()
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
 </script>
 
 <template>
-  <div class="relative" v-click-away="closeDropdown">
+  <div class="relative" ref="dropdownRef">
     <button
       @click="toggleDropdown"
       class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 transition-colors duration-200"

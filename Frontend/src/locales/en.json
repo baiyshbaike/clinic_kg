@@ -13,9 +13,37 @@
     "about": "About",
     "doctors": "Doctors",
     "services": "Services",
+    "gallery": "Gallery",
+    "renovation": "Renovation",
     "news": "News",
+    "faq": "FAQ",
     "contacts": "Contacts",
     "appointment": "Appointment"
+  },
+  "gallery": {
+    "title": "Gallery",
+    "subtitle": "Photos of the clinic, departments and workspaces",
+    "categories": {
+      "clinic": "Clinic",
+      "equipment": "Equipment",
+      "doctors": "Doctors"
+    }
+  },
+  "structure": {
+    "title": "Structure of Our Hospital",
+    "polyclinic": {
+      "title": "Polyclinic",
+      "description": "Specialist consultations, diagnostics and outpatient treatment"
+    },
+    "hospital": {
+      "title": "Hospital",
+      "description": "Round-the-clock inpatient treatment and surgical care"
+    },
+    "ogpmu": {
+      "title": "OGPMU",
+      "description": "Department of State Presidential Medical Care"
+    },
+    "learnMore": "Learn More"
   },
   "hero": {
     "title": "Multi-Profile Clinic",
@@ -242,7 +270,7 @@
       "name": "Your name",
       "namePlaceholder": "Enter your name",
       "email": "Email",
-      "emailPlaceholder": "your@email.com",
+      "emailPlaceholder": "your{'@'}email.com",
       "phone": "Phone",
       "phonePlaceholder": "+996 (___) ___-___",
       "message": "Message",
@@ -268,7 +296,7 @@
       "phone": "Phone",
       "phonePlaceholder": "+996 (___) ___-___",
       "email": "Email",
-      "emailPlaceholder": "your@email.com",
+      "emailPlaceholder": "your{'@'}email.com",
       "doctor": "Select Doctor",
       "doctorPlaceholder": "Choose a doctor",
       "date": "Date",
@@ -344,6 +372,57 @@
     "followUs": "Follow Us",
     "stateInstitution": "State Institution",
     "copyright": "Clinical Hospital under the Administration of the President of the KR. All rights reserved."
+  },
+  "officialResources": {
+    "title": "Official Resources"
+  },
+  "polyclinic": {
+    "about": "About Polyclinic",
+    "aboutDescription": "Our hospital's polyclinic provides specialist consultations, comprehensive examination and outpatient treatment for adults and children.",
+    "departments": "Polyclinic Departments"
+  },
+  "hospital": {
+    "about": "About Hospital",
+    "aboutDescription": "Our hospital provides round-the-clock treatment, surgical care and intensive care.",
+    "departments": "Hospital Departments"
+  },
+  "ogpmu": {
+    "about": "About OGPMU",
+    "aboutDescription": "Department of State Presidential Medical Care provides a full range of medical services.",
+    "services": "OGPMU Services"
+  },
+  "renovation": {
+    "title": "Renovation Works",
+    "subtitle": "Modernization and renovation of hospital departments",
+    "programTitle": "About the Modernization Program",
+    "programDescription": "A large-scale clinic modernization program was launched in 2023 to improve medical care conditions and introduce modern technologies. Renovation work affected all key departments of the hospital.",
+    "photosBefore": "photos before",
+    "photosAfter": "photos after",
+    "before": "Before renovation",
+    "after": "After renovation",
+    "viewBefore": "Before renovation",
+    "viewAfter": "After renovation",
+    "photo": "Photo",
+    "departments": {
+      "cardiology": {
+        "description": "Complete reconstruction of the cardiology department with new equipment installation"
+      },
+      "surgery": {
+        "description": "Renewal of surgical blocks and intensive care units"
+      },
+      "pediatrics": {
+        "description": "Renovation of the pediatric department with comfortable environment creation"
+      },
+      "therapy": {
+        "description": "Modernization of the therapeutic department"
+      },
+      "neurology": {
+        "description": "Renewal of the neurology department"
+      },
+      "orthopedics": {
+        "description": "Reconstruction of the orthopedics department"
+      }
+    }
   },
   "specialties": {
     "cardiology": "Cardiology",

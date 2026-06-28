@@ -13,9 +13,9 @@ const filteredServices = computed(() => {
 
 const getCategoryLabel = (catId: string) => {
   if (catId === 'all') return t('services.categories.all')
-  if (catId === 'Tedavi') return t('services.categories.treatment')
-  if (catId === 'Tanı') return t('services.categories.diagnostics')
-  if (catId === 'Korunma') return t('services.categories.prevention')
+  if (catId === 'treatment') return t('services.categories.treatment')
+  if (catId === 'diagnostics') return t('services.categories.diagnostics')
+  if (catId === 'prevention') return t('services.categories.prevention')
   return catId
 }
 </script>
@@ -82,7 +82,7 @@ const getCategoryLabel = (catId: string) => {
                     {{ service.title }}
                   </h3>
                   <span class="px-2 py-0.5 text-xs font-medium bg-primary/10 text-primary rounded-full">
-                    {{ service.category }}
+                    {{ getCategoryLabel(service.category) }}
                   </span>
                 </div>
                 <p class="text-muted-foreground text-sm">

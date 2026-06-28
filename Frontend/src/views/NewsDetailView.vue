@@ -17,6 +17,42 @@ const relatedNews = computed(() => {
     .filter((n: any) => n.id !== article.value!.id)
     .slice(0, 3)
 })
+
+const getCategoryLabel = (cat: string) => {
+  if (cat === 'technology') return t('news.categories.technology')
+  if (cat === 'event') return t('news.categories.event')
+  if (cat === 'renovation') return t('news.categories.renovation')
+  if (cat === 'education') return t('news.categories.education')
+  return cat
+}
+
+const shareLinks = computed(() => {
+  if (!article.value) return []
+
+  const url = encodeURIComponent(window.location.href)
+  const title = encodeURIComponent(article.value.title)
+
+  return [
+    {
+      label: 'Facebook',
+      className: 'bg-blue-500 hover:bg-blue-600',
+      href: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+      icon: 'facebook',
+    },
+    {
+      label: 'X',
+      className: 'bg-sky-500 hover:bg-sky-600',
+      href: `https://twitter.com/intent/tweet?url=${url}&text=${title}`,
+      icon: 'twitter',
+    },
+    {
+      label: 'WhatsApp',
+      className: 'bg-green-500 hover:bg-green-600',
+      href: `https://wa.me/?text=${title}%20${url}`,
+      icon: 'whatsapp',
+    },
+  ]
+})
 </script>
 
 <template>
@@ -48,8 +84,16 @@ const relatedNews = computed(() => {
               <span>{{ article.date }}</span>
             </div>
             <span class="px-2 py-0.5 text-xs font-medium bg-primary/10 text-primary rounded-full">
-              {{ article.category }}
+              {{ getCategoryLabel(article.category) }}
             </span>
+          </div>
+
+          <div v-if="article.image" class="mb-8 rounded-xl overflow-hidden card-shadow">
+            <img
+              :src="article.image"
+              :alt="article.title"
+              class="w-full max-h-[420px] object-cover"
+            />
           </div>
 
           <div class="prose prose-lg max-w-none">
@@ -64,19 +108,20 @@ const relatedNews = computed(() => {
           <div class="mt-12 pt-8 border-t border-border">
             <h3 class="text-lg font-semibold mb-4">{{ t('news.share') }}</h3>
             <div class="flex gap-3">
-              <a href="#" class="w-10 h-10 rounded-lg bg-blue-500 text-white flex items-center justify-center hover:bg-blue-600 transition-colors no-underline">
+              <a
+                v-for="link in shareLinks"
+                :key="link.label"
+                :href="link.href"
+                target="_blank"
+                rel="noopener noreferrer"
+                :aria-label="link.label"
+                class="w-10 h-10 rounded-lg text-white flex items-center justify-center transition-colors no-underline"
+                :class="link.className"
+              >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-                </svg>
-              </a>
-              <a href="#" class="w-10 h-10 rounded-lg bg-sky-500 text-white flex items-center justify-center hover:bg-sky-600 transition-colors no-underline">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
-                </svg>
-              </a>
-              <a href="#" class="w-10 h-10 rounded-lg bg-green-500 text-white flex items-center justify-center hover:bg-green-600 transition-colors no-underline">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                  <path v-if="link.icon === 'facebook'" d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                  <path v-else-if="link.icon === 'twitter'" d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
+                  <path v-else d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
                 </svg>
               </a>
             </div>
@@ -96,7 +141,15 @@ const relatedNews = computed(() => {
             class="group rounded-2xl bg-white border-2 border-transparent hover:border-primary overflow-hidden card-shadow card-hover no-underline"
           >
             <div class="relative h-32 overflow-hidden">
+              <img
+                v-if="item.image"
+                :src="item.image"
+                :alt="item.title"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                loading="lazy"
+              />
               <div
+                v-else
                 class="w-full h-full flex items-center justify-center text-white text-4xl font-bold group-hover:scale-110 transition-transform duration-300"
                 :class="[
                   index % 3 === 0 ? 'gradient-primary' :

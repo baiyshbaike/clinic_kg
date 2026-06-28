@@ -35,8 +35,8 @@ const filteredDoctors = computed(() => {
 
     <section class="py-8 bg-background border-b border-border">
       <div class="container-custom">
-        <div class="flex flex-col md:flex-row gap-4">
-          <div class="flex-1">
+        <div class="space-y-4">
+          <div class="max-w-md">
             <input
               v-model="searchQuery"
               type="text"

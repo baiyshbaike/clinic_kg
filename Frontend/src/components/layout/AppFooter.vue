@@ -9,7 +9,10 @@ const quickLinks = [
   { labelKey: 'nav.about', href: '/about' },
   { labelKey: 'nav.doctors', href: '/doctors' },
   { labelKey: 'nav.services', href: '/services' },
+  { labelKey: 'nav.gallery', href: '/gallery' },
+  { labelKey: 'nav.renovation', href: '/renovation' },
   { labelKey: 'nav.news', href: '/news' },
+  { labelKey: 'nav.faq', href: '/faq' },
   { labelKey: 'nav.contacts', href: '/contact' },
   { labelKey: 'nav.appointment', href: '/appointment' },
 ]

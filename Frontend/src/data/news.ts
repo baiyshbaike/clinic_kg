@@ -1,60 +1,73 @@
+import heroEquipment from '@/assets/images/hero-2.jpg'
+import heroDoctors from '@/assets/images/hero-3.jpg'
+import clinicRoom from '@/assets/images/gallery/rooms/img2.jpeg'
+import procedureRoom from '@/assets/images/gallery/rooms/img5.jpeg'
+import diagnosticRoom from '@/assets/images/gallery/rooms/img3.jpeg'
+import wardRoom from '@/assets/images/gallery/rooms/img4.jpeg'
+
 export interface NewsItem {
   id: string
   title: string
   excerpt: string
   content: string
   date: string
-  category: string
+  category: 'technology' | 'event' | 'renovation' | 'education'
   image?: string
 }
 
 export const news: NewsItem[] = [
   {
-    id: 'yeni-rontgen-cihazi',
-    title: 'Yeni Röntgen Cihazı Hizmete Girdi',
-    excerpt: 'Hastanemize yeni nesil dijital röntgen cihazı monte edildi. Bu cihaz sayesinde daha hızlı ve doğru tanı konulabilecek.',
-    content: 'Hastanemiz tıbbi altyapısını güçlendirmeye devam ediyor. Son teknoloji dijital röntgen cihazımız hasta kabulüne başladı. Yeni cihaz, minimal radyasyon ile yüksek çözünürlüklü görüntü elde etme kapasitesine sahip. Bu yatırım sayesinde hastalarımız daha hızlı ve doğru tanı alabilecekler.',
-    date: '15 Mart 2024',
-    category: 'Teknoloji',
+    id: 'new-xray-equipment',
+    title: 'Новый цифровой рентген-аппарат введен в эксплуатацию',
+    excerpt: 'В больнице установлен современный цифровой рентген-аппарат для более быстрой и точной диагностики.',
+    content: 'Клиническая больница продолжает укреплять диагностическую базу. Новый цифровой рентген-аппарат позволяет получать изображения высокого качества при сниженной лучевой нагрузке. Это помогает врачам быстрее принимать клинические решения и повышает комфорт пациентов.',
+    date: '15 марта 2024',
+    category: 'technology',
+    image: heroEquipment,
   },
   {
-    id: 'kardiyoloji-kongresi',
-    title: 'Uluslararası Kardiyoloji Kongresi Düzenlendi',
-    excerpt: 'Hastanemiz organizasyonunda gerçekleştirilen kongreye 200’den fazla doktor katıldı.',
-    content: 'Uluslararası Kardiyoloji Kongresi, hastanemizin ev sahipliğinde başarıyla gerçekleşti. 15 ülkeden 200’den fazla doktorun katıldığı kongrede, kalp ve damar hastalıklarındaki son gelişmeler tartışıldı. Kongre boyunca sunulan bildiriler büyük ilgi gördü.',
-    date: '10 Mart 2024',
-    category: 'Etkinlik',
+    id: 'cardiology-conference',
+    title: 'Состоялась международная конференция по кардиологии',
+    excerpt: 'В конференции приняли участие более 200 специалистов, обсудивших современные подходы к лечению сердечно-сосудистых заболеваний.',
+    content: 'На базе больницы прошла международная конференция по кардиологии. Врачи и приглашенные эксперты обсудили профилактику, диагностику и лечение сердечно-сосудистых заболеваний, а также обменялись практическим опытом.',
+    date: '10 марта 2024',
+    category: 'event',
+    image: heroDoctors,
   },
   {
-    id: 'cocuk-bolumu-yenilendi',
-    title: 'Çocuk Servisi Yenilendi',
-    excerpt: 'Çocuk hastalıkları bölümümüz yeni mobilyalar ve ekipmanlarla yeniden düzenlendi.',
-    content: 'Çocuklarımızın daha konforlu bir ortamda tedavi edilmesi için çocuk servisimiz tamamen yenilendi. Yeni mobilyalar, renkli duvar boyaları ve modern tıbbi ekipmanlarla donatılan servisimiz, minik hastalarımıza daha iyi bir deneyim sunacak.',
-    date: '5 Mart 2024',
-    category: 'Yenileme',
+    id: 'children-department-renovated',
+    title: 'Обновлено детское отделение',
+    excerpt: 'Детское отделение получило новое оборудование, мебель и более комфортные условия для маленьких пациентов.',
+    content: 'В детском отделении завершены работы по обновлению помещений. Новая мебель, современное оборудование и улучшенная организация пространства помогают создать более спокойную и безопасную среду для лечения детей.',
+    date: '5 марта 2024',
+    category: 'renovation',
+    image: wardRoom,
   },
   {
-    id: 'ucretsiz-saglik-taramasi',
-    title: 'Ücretsiz Sağlık Taraması',
-    excerpt: 'Halkımız için ücretsiz genel sağlık taraması düzenlenecektir.',
-    content: 'Hastanemiz, toplum sağlığının korunması amacıyla ücretsiz genel sağlık taraması düzenliyor. Tarama kapsamında kan şekeri, tansiyon, kolesterol ve genel muayene yapılacak. Etkinlik 20 Mart tarihinde hastanemizde gerçekleştirilecektir.',
-    date: '1 Mart 2024',
-    category: 'Etkinlik',
+    id: 'free-health-screening',
+    title: 'Проведен день бесплатного медицинского осмотра',
+    excerpt: 'Для жителей города организован профилактический осмотр с консультациями специалистов.',
+    content: 'В рамках программы профилактики заболеваний больница провела день бесплатного медицинского осмотра. Пациенты смогли проверить основные показатели здоровья и получить рекомендации профильных специалистов.',
+    date: '1 марта 2024',
+    category: 'event',
+    image: clinicRoom,
   },
   {
-    id: 'doktor-egitimi',
-    title: 'Doktorlarımız Eğitim Aldı',
-    excerpt: 'Hastane doktorlarımız son tıbbi gelişmeler konusunda eğitim aldı.',
-    content: 'Hastanemizde görev yapan doktorlarımız, son tıbbi gelişmeler ve tedavi yöntemleri konusunda yoğun bir eğitim programından geçti. 3 gün süren eğitimde, yeni tanı ve tedavi yöntemleri uygulamalı olarak anlatıldı.',
-    date: '25 Şubat 2024',
-    category: 'Eğitim',
+    id: 'doctor-training',
+    title: 'Врачи прошли обучение по современным методам лечения',
+    excerpt: 'Специалисты больницы приняли участие в обучающем курсе по новым диагностическим и лечебным подходам.',
+    content: 'Медицинские специалисты больницы регулярно повышают квалификацию. Очередной курс был посвящен современным методам диагностики, маршрутизации пациентов и междисциплинарному взаимодействию.',
+    date: '25 февраля 2024',
+    category: 'education',
+    image: procedureRoom,
   },
   {
-    id: 'laboratuvar-genisleme',
-    title: 'Laboratuvar Genişletildi',
-    excerpt: 'Laboratuvar bölümümüz yeni test kapasitesi ile genişletildi.',
-    content: 'Hastanemiz laboratuvarı, artan hasta kapasitesini karşılamak amacıyla genişletildi. Yeni eklenen cihazlar sayesinde daha fazla test çeşidi yapılabilecek ve sonuçlar daha hızlı çıkabilecek.',
-    date: '20 Şubat 2024',
-    category: 'Yenileme',
+    id: 'laboratory-expanded',
+    title: 'Расширены возможности лаборатории',
+    excerpt: 'Лабораторное отделение увеличило пропускную способность и перечень доступных исследований.',
+    content: 'Лаборатория больницы получила дополнительное оборудование, что позволит быстрее выполнять анализы и расширить спектр исследований. Это особенно важно для своевременной диагностики и контроля лечения.',
+    date: '20 февраля 2024',
+    category: 'renovation',
+    image: diagnosticRoom,
   },
 ]

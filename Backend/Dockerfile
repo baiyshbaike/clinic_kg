@@ -19,7 +19,7 @@ RUN useradd --create-home appuser
 
 # Python dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt daphne
+RUN pip install --no-cache-dir -r requirements.txt gunicorn
 
 # Copy project
 COPY --chown=appuser:appuser . .

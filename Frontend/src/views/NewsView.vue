@@ -24,10 +24,10 @@ const filteredNews = computed(() => {
 
 const getCategoryLabel = (cat: string) => {
   if (cat === 'all') return t('news.categories.all')
-  if (cat === 'Teknoloji') return t('news.categories.technology')
-  if (cat === 'Etkinlik') return t('news.categories.event')
-  if (cat === 'Yenileme') return t('news.categories.renovation')
-  if (cat === 'Eğitim') return t('news.categories.education')
+  if (cat === 'technology') return t('news.categories.technology')
+  if (cat === 'event') return t('news.categories.event')
+  if (cat === 'renovation') return t('news.categories.renovation')
+  if (cat === 'education') return t('news.categories.education')
   return cat
 }
 </script>
@@ -83,7 +83,15 @@ const getCategoryLabel = (cat: string) => {
             class="group rounded-2xl bg-white border-2 border-transparent hover:border-primary overflow-hidden card-shadow card-hover no-underline"
           >
             <div class="relative h-48 overflow-hidden">
+              <img
+                v-if="item.image"
+                :src="item.image"
+                :alt="item.title"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                loading="lazy"
+              />
               <div
+                v-else
                 class="w-full h-full flex items-center justify-center text-white text-6xl font-bold group-hover:scale-110 transition-transform duration-300"
                 :class="[
                   index % 3 === 0 ? 'gradient-primary' :

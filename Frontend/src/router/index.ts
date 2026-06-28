@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
+import i18n from '@/i18n'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -21,10 +22,52 @@ const routes: RouteRecordRaw[] = [
     meta: { titleKey: 'nav.doctors' },
   },
   {
+    path: '/doctors/:id',
+    name: 'doctorDetail',
+    component: () => import('@/views/DoctorDetailView.vue'),
+    meta: { titleKey: 'nav.doctors' },
+  },
+  {
     path: '/services',
     name: 'services',
     component: () => import('@/views/ServicesView.vue'),
     meta: { titleKey: 'nav.services' },
+  },
+  {
+    path: '/gallery',
+    name: 'gallery',
+    component: () => import('@/views/GalleryView.vue'),
+    meta: { titleKey: 'nav.gallery' },
+  },
+  {
+    path: '/renovation',
+    name: 'renovation',
+    component: () => import('@/views/RenovationView.vue'),
+    meta: { titleKey: 'nav.renovation' },
+  },
+  {
+    path: '/polyclinic',
+    name: 'polyclinic',
+    component: () => import('@/views/PolyclinicView.vue'),
+    meta: { titleKey: 'structure.polyclinic.title' },
+  },
+  {
+    path: '/hospital',
+    name: 'hospital',
+    component: () => import('@/views/HospitalView.vue'),
+    meta: { titleKey: 'structure.hospital.title' },
+  },
+  {
+    path: '/ogpmu',
+    name: 'ogpmu',
+    component: () => import('@/views/OgpmuView.vue'),
+    meta: { titleKey: 'structure.ogpmu.title' },
+  },
+  {
+    path: '/faq',
+    name: 'faq',
+    component: () => import('@/views/FaqView.vue'),
+    meta: { titleKey: 'nav.contacts' },
   },
   {
     path: '/news',
@@ -53,7 +96,8 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/:pathMatch(.*)*',
     name: 'notFound',
-    redirect: '/',
+    component: () => import('@/views/NotFoundView.vue'),
+    meta: { titleKey: 'common.pageNotFound' },
   },
 ]
 
@@ -70,8 +114,8 @@ const router = createRouter({
 
 router.beforeEach((to, _from, next) => {
   const titleKey = to.meta.titleKey as string
-  const baseTitle = 'Клиническая больница'
-  document.title = titleKey ? `${titleKey} | ${baseTitle}` : baseTitle
+  const baseTitle = i18n.global.t('header.clinicName')
+  document.title = titleKey ? `${i18n.global.t(titleKey)} | ${baseTitle}` : baseTitle
   next()
 })
 

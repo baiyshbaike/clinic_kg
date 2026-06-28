@@ -32,7 +32,15 @@ const latestNews = news.slice(0, 3)
           class="group rounded-2xl bg-white border-2 border-transparent hover:border-primary overflow-hidden card-shadow card-hover no-underline"
         >
           <div class="relative h-48 overflow-hidden">
+            <img
+              v-if="item.image"
+              :src="item.image"
+              :alt="item.title"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+              loading="lazy"
+            />
             <div
+              v-else
               class="w-full h-full flex items-center justify-center text-white text-6xl font-bold group-hover:scale-110 transition-transform duration-300"
               :class="[
                 index === 0 ? 'gradient-primary' :
