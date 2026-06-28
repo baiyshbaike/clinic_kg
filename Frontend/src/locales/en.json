@@ -11,16 +11,14 @@
   "nav": {
     "home": "Home",
     "about": "About",
-    "services": "Services",
+    "management": "Management",
     "prices": "Prices",
+    "vacancies": "Vacancies",
     "gallery": "Gallery",
-    "renovation": "Renovation",
+    "renovations": "Renovation",
     "news": "News",
     "information": "Information",
-    "vacancies": "Vacancies",
-    "faq": "FAQ",
-    "contacts": "Contacts",
-    "appointment": "Appointment"
+    "contacts": "Contacts"
   },
   "gallery": {
     "title": "Gallery",

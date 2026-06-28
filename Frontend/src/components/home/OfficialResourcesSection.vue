@@ -28,14 +28,14 @@ const resources = [
   {
     id: 4,
     title: 'Центр здоровья',
-    url: '/services',
+    url: '/information',
     image: '❤️',
     isExternal: false,
   },
   {
     id: 5,
     title: 'Программа государственных гарантий',
-    url: '/faq',
+    url: '/information',
     image: '📜',
     isExternal: false,
   },

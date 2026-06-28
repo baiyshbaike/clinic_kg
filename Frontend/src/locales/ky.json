@@ -11,16 +11,14 @@
   "nav": {
     "home": "Башкы бет",
     "about": "Биз жөнүндө",
-    "services": "Кызматтар",
+    "management": "Жетекчилик",
     "prices": "Баалар",
+    "vacancies": "Вакансиялар",
     "gallery": "Галерея",
-    "renovation": "Реконструкция",
+    "renovations": "Реконструкция",
     "news": "Жаңылыктар",
     "information": "Маалымат",
-    "vacancies": "Вакансиялар",
-    "faq": "Суроолор жооптор",
-    "contacts": "Байланыш",
-    "appointment": "Кайрылуу"
+    "contacts": "Байланыш"
   },
   "gallery": {
     "title": "Галерея",

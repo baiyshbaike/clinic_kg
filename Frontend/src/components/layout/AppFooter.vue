@@ -7,16 +7,13 @@ const currentYear = new Date().getFullYear()
 
 const quickLinks = [
   { labelKey: 'nav.about', href: '/about' },
-  { labelKey: 'nav.services', href: '/services' },
+  { labelKey: 'nav.management', href: '/management' },
   { labelKey: 'nav.prices', href: '/prices' },
-  { labelKey: 'nav.gallery', href: '/gallery' },
-  { labelKey: 'nav.renovation', href: '/renovation' },
-  { labelKey: 'nav.news', href: '/news' },
-  { labelKey: 'nav.information', href: '/information' },
   { labelKey: 'nav.vacancies', href: '/vacancies' },
-  { labelKey: 'nav.faq', href: '/faq' },
-  { labelKey: 'nav.contacts', href: '/contact' },
-  { labelKey: 'nav.appointment', href: '/appointment' },
+  { labelKey: 'nav.gallery', href: '/gallery' },
+  { labelKey: 'nav.renovations', href: '/renovations' },
+  { labelKey: 'nav.information', href: '/information' },
+  { labelKey: 'nav.contacts', href: '/contacts' },
 ]
 </script>
 

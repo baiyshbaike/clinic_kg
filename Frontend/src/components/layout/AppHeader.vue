@@ -12,15 +12,13 @@ const isMobileMenuOpen = ref(false)
 const navItems = [
   { labelKey: 'nav.home', href: '/' },
   { labelKey: 'nav.about', href: '/about' },
-  { labelKey: 'nav.services', href: '/services' },
+  { labelKey: 'nav.management', href: '/management' },
   { labelKey: 'nav.prices', href: '/prices' },
-  { labelKey: 'nav.gallery', href: '/gallery' },
-  { labelKey: 'nav.renovation', href: '/renovation' },
-  { labelKey: 'nav.news', href: '/news' },
-  { labelKey: 'nav.information', href: '/information' },
   { labelKey: 'nav.vacancies', href: '/vacancies' },
-  { labelKey: 'nav.faq', href: '/faq' },
-  { labelKey: 'nav.contacts', href: '/contact' },
+  { labelKey: 'nav.gallery', href: '/gallery' },
+  { labelKey: 'nav.renovations', href: '/renovations' },
+  { labelKey: 'nav.information', href: '/information' },
+  { labelKey: 'nav.contacts', href: '/contacts' },
 ]
 
 const toggleMobileMenu = () => {
@@ -78,13 +76,6 @@ const closeMobileMenu = () => {
             <div class="hidden md:block">
               <LanguageSwitcher />
             </div>
-            <RouterLink
-              to="/appointment"
-              class="hidden md:inline-flex btn-primary text-sm no-underline"
-              @click="closeMobileMenu"
-            >
-              {{ t('header.appointment') }}
-            </RouterLink>
           </div>
 
           <button
@@ -126,13 +117,6 @@ const closeMobileMenu = () => {
               @click="closeMobileMenu"
             >
               {{ t(item.labelKey) }}
-            </RouterLink>
-            <RouterLink
-              to="/appointment"
-              class="block w-full btn-primary text-center text-sm no-underline mt-4"
-              @click="closeMobileMenu"
-            >
-              {{ t('header.appointment') }}
             </RouterLink>
             <div class="pt-2 md:hidden">
               <LanguageSwitcher />

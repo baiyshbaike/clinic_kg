@@ -16,10 +16,10 @@ const routes: RouteRecordRaw[] = [
     meta: { titleKey: 'nav.about' },
   },
   {
-    path: '/services',
-    name: 'services',
-    component: () => import('@/views/ServicesView.vue'),
-    meta: { titleKey: 'nav.services' },
+    path: '/management',
+    name: 'management',
+    component: () => import('@/views/ManagementView.vue'),
+    meta: { titleKey: 'nav.management' },
   },
   {
     path: '/prices',
@@ -34,10 +34,10 @@ const routes: RouteRecordRaw[] = [
     meta: { titleKey: 'nav.gallery' },
   },
   {
-    path: '/renovation',
-    name: 'renovation',
+    path: '/renovations',
+    name: 'renovations',
     component: () => import('@/views/RenovationView.vue'),
-    meta: { titleKey: 'nav.renovation' },
+    meta: { titleKey: 'nav.renovations' },
   },
   {
     path: '/polyclinic',
@@ -56,12 +56,6 @@ const routes: RouteRecordRaw[] = [
     name: 'ogpmu',
     component: () => import('@/views/OgpmuView.vue'),
     meta: { titleKey: 'structure.ogpmu.title' },
-  },
-  {
-    path: '/faq',
-    name: 'faq',
-    component: () => import('@/views/FaqView.vue'),
-    meta: { titleKey: 'nav.faq' },
   },
   {
     path: '/information',
@@ -88,16 +82,10 @@ const routes: RouteRecordRaw[] = [
     meta: { titleKey: 'nav.news' },
   },
   {
-    path: '/contact',
-    name: 'contact',
+    path: '/contacts',
+    name: 'contacts',
     component: () => import('@/views/ContactView.vue'),
     meta: { titleKey: 'nav.contacts' },
-  },
-  {
-    path: '/appointment',
-    name: 'appointment',
-    component: () => import('@/views/AppointmentView.vue'),
-    meta: { titleKey: 'nav.appointment' },
   },
   {
     path: '/:pathMatch(.*)*',

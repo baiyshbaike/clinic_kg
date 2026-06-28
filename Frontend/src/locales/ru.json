@@ -11,16 +11,14 @@
   "nav": {
     "home": "Главная",
     "about": "О нас",
-    "services": "Услуги",
+    "management": "Руководство",
     "prices": "Цены",
+    "vacancies": "Вакансии",
     "gallery": "Галерея",
-    "renovation": "Реконструкция",
+    "renovations": "Реконструкция",
     "news": "Новости",
     "information": "Информация",
-    "vacancies": "Вакансии",
-    "faq": "Вопросы и ответы",
-    "contacts": "Контакты",
-    "appointment": "Запись"
+    "contacts": "Контакты"
   },
   "gallery": {
     "title": "Галерея",
