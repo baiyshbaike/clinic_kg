@@ -34,7 +34,7 @@ const advantages = [
     <section class="py-16">
       <div class="container-custom">
         <div class="max-w-6xl mx-auto">
-          <h2 class="text-3xl font-bold mb-6 text-secondary">{{ t('about.title') }}</h2>
+<!--          <div v-html></div>-->
           <p class="text-lg text-muted-foreground mb-8 leading-relaxed">
             {{ t('about.description') }}
           </p>

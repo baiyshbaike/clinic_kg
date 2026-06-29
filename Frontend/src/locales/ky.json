@@ -52,32 +52,6 @@
     "cta": "Кайрылуу",
     "learnMore": "Көбүрөөк билиңиз"
   },
-  "quickAccess": {
-    "examination": {
-      "title": "Текшерүү",
-      "description": "Жалпы текшерүү жана кеңешүү"
-    },
-    "laboratory": {
-      "title": "Лаборатория",
-      "description": "Медициналык анализдер"
-    },
-    "xray": {
-      "title": "Рентген",
-      "description": "Диагностикалык кызматтар"
-    },
-    "dental": {
-      "title": "Стоматология",
-      "description": "Тиштерди дарылоо"
-    },
-    "ophthalmology": {
-      "title": "Офтальмология",
-      "description": "Көз ооруларын дарылоо"
-    },
-    "emergency": {
-      "title": "Тез жардам",
-      "description": "24/7 тез жардам"
-    }
-  },
   "services": {
     "title": "Кызматтарыбыз",
     "subtitle": "Саламаттыгыңыз үчүн кеңири медициналык кызматтар",

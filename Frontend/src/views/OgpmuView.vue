@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
 import { ogpmuData } from '@/data/clinicStructure'
-import { doctors } from '@/data/doctors'
 
 const { t } = useI18n()
-const ogpmuDoctors = computed(() => doctors.filter((doctor) => doctor.department === 'ОГПМУ'))
 </script>
 
 <template>
@@ -91,14 +88,17 @@ const ogpmuDoctors = computed(() => doctors.filter((doctor) => doctor.department
             <h2 class="text-3xl font-bold mb-8 text-secondary">Наши специалисты</h2>
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               <article
-                v-for="doctor in ogpmuDoctors"
-                :key="doctor.id"
+                v-for="(doctor, index) in ogpmuData.doctors"
+                :key="index"
                 class="rounded-2xl bg-white border border-border overflow-hidden card-shadow"
               >
-                <img :src="doctor.image" :alt="doctor.name" class="w-full h-56 object-cover" />
+                <img :src="doctor.photo" :alt="doctor.name" class="w-full h-56 object-cover" />
                 <div class="p-4">
                   <h3 class="font-semibold text-secondary">{{ doctor.name }}</h3>
-                  <p class="text-sm text-primary">{{ t(`specialties.${doctor.specialtyKey}`) }}</p>
+                  <p class="text-sm text-primary">{{ doctor.specialty }}</p>
+                  <div class="flex gap-2 mt-2">
+                    <span class="bg-primary/10 text-primary px-2 py-0.5 rounded text-xs">{{ doctor.category }}</span>
+                  </div>
                   <p class="text-sm text-muted-foreground mt-2">Стаж: {{ doctor.experience }}</p>
                 </div>
               </article>

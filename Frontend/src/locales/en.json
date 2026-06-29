@@ -52,32 +52,6 @@
     "cta": "Book Appointment",
     "learnMore": "Learn More"
   },
-  "quickAccess": {
-    "examination": {
-      "title": "Examination",
-      "description": "General check-up and consultation"
-    },
-    "laboratory": {
-      "title": "Laboratory",
-      "description": "Medical tests and analyses"
-    },
-    "xray": {
-      "title": "X-Ray",
-      "description": "Diagnostic services"
-    },
-    "dental": {
-      "title": "Dental",
-      "description": "Dental treatment"
-    },
-    "ophthalmology": {
-      "title": "Ophthalmology",
-      "description": "Eye disease treatment"
-    },
-    "emergency": {
-      "title": "Emergency",
-      "description": "24/7 emergency care"
-    }
-  },
   "services": {
     "title": "Our Services",
     "subtitle": "A wide range of medical services for your health",

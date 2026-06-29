@@ -52,32 +52,6 @@
     "cta": "Записаться",
     "learnMore": "Подробнее"
   },
-  "quickAccess": {
-    "examination": {
-      "title": "Осмотр",
-      "description": "Общий осмотр и консультация"
-    },
-    "laboratory": {
-      "title": "Лаборатория",
-      "description": "Медицинские анализы"
-    },
-    "xray": {
-      "title": "Рентген",
-      "description": "Диагностические услуги"
-    },
-    "dental": {
-      "title": "Стоматология",
-      "description": "Лечение зубов"
-    },
-    "ophthalmology": {
-      "title": "Офтальмология",
-      "description": "Лечение заболеваний глаз"
-    },
-    "emergency": {
-      "title": "Скорая",
-      "description": "Экстренная помощь 24/7"
-    }
-  },
   "services": {
     "title": "Наши услуги",
     "subtitle": "Широкий спектр медицинских услуг для вашего здоровья",

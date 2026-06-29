@@ -1,5 +1,13 @@
 import obodoevPhoto from '@/assets/images/zaved/Obodoev.png'
 import akmatovaPhoto from '@/assets/images/doctors/akmatova.jpeg'
+import premPhoto from '@/assets/images/doctors/prem.jpeg'
+import abdyldaevaPhoto from '@/assets/images/doctors/abdyldaeva.jpeg'
+import nazarkulovaPhoto from '@/assets/images/doctors/nazarkulova.jpeg'
+import abduraimovPhoto from '@/assets/images/doctors/abduraimov.jpeg'
+import mamatalievaPhoto from '@/assets/images/doctors/mamatalieva.jpeg'
+import karataevPhoto from '@/assets/images/doctors/karataev.jpeg'
+import amankulovPhoto from '@/assets/images/doctors/amankulov.jpeg'
+import defaultDoctorPhoto from '@/assets/images/doctors/doctor-default.png'
 
 export interface Profile {
   name: string
@@ -245,6 +253,64 @@ export const ogpmuData = {
     qualification: 'Врач высшей категории',
     experience: 'Стаж работы: 45 лет',
   } satisfies Profile,
+  doctors: [
+    {
+      name: 'Кумар Прем',
+      photo: premPhoto || defaultDoctorPhoto,
+      specialty: 'Терапевт',
+      category: 'Высшая категория',
+      experience: '25 лет',
+      schedule: 'Пн-Сб: 10:00-13:30',
+    },
+    {
+      name: 'Абдылдаева С.М',
+      photo: abdyldaevaPhoto || defaultDoctorPhoto,
+      specialty: 'Терапевт',
+      category: 'Высшая категория',
+      experience: '41 лет',
+      schedule: 'Пн-Ср-Пт: 9:00-12:15',
+    },
+    {
+      name: 'Назаркулова Б.Т.',
+      photo: nazarkulovaPhoto || defaultDoctorPhoto,
+      specialty: 'Психотерапевт',
+      category: '-',
+      experience: '49 года',
+      schedule: 'Вт-Чт: 7:30-14:00',
+    },
+    {
+      name: 'Абдураимов Д.А',
+      photo: abduraimovPhoto || defaultDoctorPhoto,
+      specialty: 'Уролог',
+      category: '-',
+      experience: '14 лет',
+      schedule: 'Вт-Чт: 7:30-14:00',
+    },
+    {
+      name: 'Маматалиева Н.М.',
+      photo: mamatalievaPhoto || defaultDoctorPhoto,
+      specialty: 'Окушер-гинеколог',
+      category: '-',
+      experience: '4 года',
+      schedule: 'Пн-Ср-Пт: 10:00-16:00',
+    },
+    {
+      name: 'Каратаев М.А.',
+      photo: karataevPhoto || defaultDoctorPhoto,
+      specialty: 'Стоматолог',
+      category: '-',
+      experience: '33 года',
+      schedule: 'Пн-Чт: 9:00-16:00',
+    },
+    {
+      name: 'Аманкулов У.К.',
+      photo: amankulovPhoto || defaultDoctorPhoto,
+      specialty: 'ЛОР',
+      category: 'Первая категория',
+      experience: '21 год',
+      schedule: 'Вт-Сб: 8:00-15:00',
+    },
+  ],
   advantages: [
     { value: 'Международные', label: 'стандарты', description: 'Оказание услуг по международным протоколам' },
     { value: 'Высокая', label: 'квалификация', description: 'Врачи с большим практическим опытом' },

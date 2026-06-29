@@ -34,6 +34,12 @@ const routes: RouteRecordRaw[] = [
     meta: { titleKey: 'nav.gallery' },
   },
   {
+    path: '/video_gallery',
+    name: 'vidoe_gallery',
+    component: () => import('@/views/VideoGalleryView.vue'),
+    meta: {titleKey: 'nav.video_gallery'}
+  },
+  {
     path: '/renovations',
     name: 'renovations',
     component: () => import('@/views/RenovationView.vue'),
@@ -86,12 +92,6 @@ const routes: RouteRecordRaw[] = [
     name: 'contacts',
     component: () => import('@/views/ContactView.vue'),
     meta: { titleKey: 'nav.contacts' },
-  },
-  {
-    path: '/content',
-    name: 'content',
-    component: () => import('@/views/content/index.vue'),
-    meta: { titleKey: 'nav.content'}
   },
   {
     path: '/:pathMatch(.*)*',
