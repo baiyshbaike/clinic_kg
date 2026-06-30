@@ -1,57 +1,79 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { news } from '@/data/news'
+import { getNewsDetail, getNewsList, type NewsItem } from '@/services/api'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const route = useRoute()
 
-const article = computed(() => {
-  return news.find((n: any) => n.id === route.params.id)
+const article = ref<NewsItem | null>(null)
+const relatedNews = ref<NewsItem[]>([])
+const loading = ref(true)
+const currentSlide = ref(0)
+
+const getTitle = (item: NewsItem) => {
+  const lang = locale.value
+  if (lang === 'ky' || lang === 'kg') return item.title_kg || item.title_ru || ''
+  if (lang === 'en') return item.title_en || item.title_ru || ''
+  return item.title_ru || ''
+}
+
+const getContent = (item: NewsItem) => {
+  const lang = locale.value
+  if (lang === 'ky' || lang === 'kg') return item.content_kg || item.content_ru || ''
+  if (lang === 'en') return item.content_en || item.content_ru || ''
+  return item.content_ru || ''
+}
+
+const formatDate = (dateStr: string) => {
+  return new Date(dateStr).toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' })
+}
+
+const allImages = computed(() => {
+  if (!article.value || !article.value.images) return []
+  return article.value.images.map(img => img.image)
 })
 
-const relatedNews = computed(() => {
-  if (!article.value) return []
-  return news
-    .filter((n: any) => n.id !== article.value!.id)
-    .slice(0, 3)
-})
+const prevSlide = () => {
+  if (currentSlide.value > 0) currentSlide.value--
+}
 
-const getCategoryLabel = (cat: string) => {
-  if (cat === 'technology') return t('news.categories.technology')
-  if (cat === 'event') return t('news.categories.event')
-  if (cat === 'renovation') return t('news.categories.renovation')
-  if (cat === 'education') return t('news.categories.education')
-  return cat
+const nextSlide = () => {
+  if (currentSlide.value < allImages.value.length - 1) currentSlide.value++
+}
+
+const goToSlide = (index: number) => {
+  currentSlide.value = index
 }
 
 const shareLinks = computed(() => {
   if (!article.value) return []
-
   const url = encodeURIComponent(window.location.href)
-  const title = encodeURIComponent(article.value.title)
+  const title = encodeURIComponent(getTitle(article.value))
 
   return [
-    {
-      label: 'Facebook',
-      className: 'bg-blue-500 hover:bg-blue-600',
-      href: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
-      icon: 'facebook',
-    },
-    {
-      label: 'X',
-      className: 'bg-sky-500 hover:bg-sky-600',
-      href: `https://twitter.com/intent/tweet?url=${url}&text=${title}`,
-      icon: 'twitter',
-    },
-    {
-      label: 'WhatsApp',
-      className: 'bg-green-500 hover:bg-green-600',
-      href: `https://wa.me/?text=${title}%20${url}`,
-      icon: 'whatsapp',
-    },
+    { label: 'Facebook', className: 'bg-blue-500 hover:bg-blue-600', href: `https://www.facebook.com/sharer/sharer.php?u=${url}`, icon: 'facebook' },
+    { label: 'X', className: 'bg-sky-500 hover:bg-sky-600', href: `https://twitter.com/intent/tweet?url=${url}&text=${title}`, icon: 'twitter' },
+    { label: 'WhatsApp', className: 'bg-green-500 hover:bg-green-600', href: `https://wa.me/?text=${title}%20${url}`, icon: 'whatsapp' },
   ]
+})
+
+onMounted(async () => {
+  loading.value = true
+  try {
+    const slug = route.params.id as string
+    article.value = await getNewsDetail(slug)
+
+    const newsResp = await getNewsList(1)
+    relatedNews.value = newsResp.results
+      .filter((n: NewsItem) => n.slug !== slug)
+      .slice(0, 3)
+  } catch (e) {
+    console.error('Ошибка загрузки новости:', e)
+  } finally {
+    loading.value = false
+  }
 })
 </script>
 
@@ -66,11 +88,15 @@ const shareLinks = computed(() => {
           </svg>
           {{ t('news.backToNews') }}
         </RouterLink>
-        <h1 v-if="article" class="text-3xl md:text-4xl font-bold mb-4">{{ article.title }}</h1>
+        <h1 v-if="article" class="text-3xl md:text-4xl font-bold mb-4">{{ getTitle(article) }}</h1>
       </div>
     </div>
 
-    <section class="py-16" v-if="article">
+    <div v-if="loading" class="text-center py-16">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+    </div>
+
+    <section v-else-if="article" class="py-16">
       <div class="container-custom">
         <div class="max-w-4xl mx-auto">
           <div class="flex items-center gap-4 mb-8 text-sm text-muted-foreground">
@@ -81,29 +107,54 @@ const shareLinks = computed(() => {
                 <line x1="8" x2="8" y1="2" y2="6"/>
                 <line x1="3" x2="21" y1="10" y2="10"/>
               </svg>
-              <span>{{ article.date }}</span>
+              <span>{{ formatDate(article.created) }}</span>
             </div>
-            <span class="px-2 py-0.5 text-xs font-medium bg-primary/10 text-primary rounded-full">
-              {{ getCategoryLabel(article.category) }}
-            </span>
           </div>
 
-          <div v-if="article.image" class="mb-8 rounded-xl overflow-hidden card-shadow">
-            <img
-              :src="article.image"
-              :alt="article.title"
-              class="w-full max-h-[420px] object-cover"
-            />
+          <div v-if="allImages.length > 0" class="mb-8 rounded-xl overflow-hidden card-shadow">
+            <div class="relative">
+              <div class="overflow-hidden">
+                <img
+                  :src="allImages[currentSlide]"
+                  :alt="getTitle(article)"
+                  class="w-full max-h-[500px] object-cover transition-transform duration-300"
+                />
+              </div>
+
+              <template v-if="allImages.length > 1">
+                <button
+                  @click="prevSlide"
+                  :disabled="currentSlide === 0"
+                  class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m15 18-6-6 6-6"/>
+                  </svg>
+                </button>
+                <button
+                  @click="nextSlide"
+                  :disabled="currentSlide === allImages.length - 1"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m9 18 6-6-6-6"/>
+                  </svg>
+                </button>
+              </template>
+
+              <div v-if="allImages.length > 1" class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+                <button
+                  v-for="(_, index) in allImages"
+                  :key="index"
+                  @click="goToSlide(index)"
+                  class="w-2.5 h-2.5 rounded-full transition-colors"
+                  :class="currentSlide === index ? 'bg-white' : 'bg-white/50'"
+                />
+              </div>
+            </div>
           </div>
 
-          <div class="prose prose-lg max-w-none">
-            <p class="text-lg text-muted-foreground leading-relaxed mb-6">
-              {{ article.excerpt }}
-            </p>
-            <p class="text-muted-foreground leading-relaxed">
-              {{ article.content }}
-            </p>
-          </div>
+          <div class="prose prose-lg max-w-none" v-html="getContent(article)"></div>
 
           <div class="mt-12 pt-8 border-t border-border">
             <h3 class="text-lg font-semibold mb-4">{{ t('news.share') }}</h3>
@@ -130,40 +181,36 @@ const shareLinks = computed(() => {
       </div>
     </section>
 
-    <section v-if="relatedNews.length > 0" class="py-16 bg-muted/30">
+    <section v-if="!loading && relatedNews.length > 0" class="py-16 bg-muted/30">
       <div class="container-custom">
         <h2 class="text-2xl font-bold mb-8 text-secondary">{{ t('news.relatedNews') }}</h2>
         <div class="grid md:grid-cols-3 gap-6">
           <RouterLink
             v-for="(item, index) in relatedNews"
             :key="item.id"
-            :to="`/news/${item.id}`"
+            :to="`/news/${item.slug}`"
             class="group rounded-2xl bg-white border-2 border-transparent hover:border-primary overflow-hidden card-shadow card-hover no-underline"
           >
             <div class="relative h-32 overflow-hidden">
               <img
-                v-if="item.image"
-                :src="item.image"
-                :alt="item.title"
+                v-if="item.main_image_url"
+                :src="item.main_image_url"
+                :alt="getTitle(item)"
                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 loading="lazy"
               />
               <div
                 v-else
                 class="w-full h-full flex items-center justify-center text-white text-4xl font-bold group-hover:scale-110 transition-transform duration-300"
-                :class="[
-                  index % 3 === 0 ? 'gradient-primary' :
-                  index % 3 === 1 ? 'gradient-secondary' :
-                  'bg-accent'
-                ]"
+                :class="[index % 3 === 0 ? 'gradient-primary' : index % 3 === 1 ? 'gradient-secondary' : 'bg-accent']"
               >
                 {{ index + 1 }}
               </div>
             </div>
             <div class="p-4">
-              <p class="text-sm text-muted-foreground mb-1">{{ item.date }}</p>
+              <p class="text-sm text-muted-foreground mb-1">{{ formatDate(item.created) }}</p>
               <h3 class="font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2">
-                {{ item.title }}
+                {{ getTitle(item) }}
               </h3>
             </div>
           </RouterLink>
@@ -171,7 +218,7 @@ const shareLinks = computed(() => {
       </div>
     </section>
 
-    <section v-else class="py-16">
+    <section v-if="!loading && !article" class="py-16">
       <div class="container-custom text-center">
         <h2 class="text-2xl font-bold mb-4">{{ t('common.notFound') }}</h2>
         <p class="text-muted-foreground mb-8">{{ t('common.pageNotFound') }}</p>

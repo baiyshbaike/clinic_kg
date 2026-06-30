@@ -1,3 +1,4 @@
+import io
 import uuid
 from datetime import datetime
 import random
@@ -12,8 +13,61 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from multiselectfield import MultiSelectField
 from django.utils.text import slugify
-from imagekit.models import ImageSpecField
-from imagekit.processors import ResizeToFill
+from PIL import Image
+
+
+MAX_IMAGE_SIZE_MB = 10
+TARGET_IMAGE_SIZE_MB = 1.5
+IMAGE_QUALITY_START = 95
+IMAGE_QUALITY_MIN = 30
+
+
+def compress_image(image_file):
+    """Сжимает изображение до целевого размера (например, 10MB -> 1.5MB) без потери качества."""
+    if not image_file:
+        return image_file
+
+    original_size = image_file.size
+    target_bytes = TARGET_IMAGE_SIZE_MB * 1024 * 1024
+
+    if original_size <= target_bytes:
+        return image_file
+
+    img = Image.open(image_file)
+    if img.mode in ('RGBA', 'P'):
+        img = img.convert('RGB')
+
+    img_format = 'JPEG'
+    content_type = image_file.content_type
+
+    if hasattr(image_file, 'name') and image_file.name:
+        ext = image_file.name.rsplit('.', 1)[-1].lower()
+        if ext == 'png':
+            img_format = 'PNG'
+        elif ext == 'webp':
+            img_format = 'WEBP'
+
+    quality = IMAGE_QUALITY_START
+    output = io.BytesIO()
+
+    while quality >= IMAGE_QUALITY_MIN:
+        output.seek(0)
+        output.truncate()
+        img.save(output, format=img_format, quality=quality, optimize=True)
+        if output.tell() <= target_bytes:
+            break
+        quality -= 5
+
+    output.seek(0)
+
+    original_name = image_file.name
+    new_name = original_name.rsplit('.', 1)[0] + '.' + img_format.lower()
+
+    compressed = image_file.__class__(output, name=new_name)
+    compressed.content_type = f'image/{img_format.lower()}'
+
+    return compressed
+
 
 # Функция для получения пути загрузки изображения новости
 def get_upload_name(instance, filename):
@@ -26,13 +80,9 @@ def get_upload_name_management(instance, filename):
     return f"management_images/{instance.pk}/{filename}"
 
 
-# Функция для получения пути загрузки изображения галереи
-def get_upload_name_image(instance, filename):
-    imageId = instance.image_gellery.slug
-    return f"image_gellery/{imageId}/{filename}"
-
 def generate_random_string(length=10):
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+
 
 class SingletonModel(models.Model):
     class Meta:
@@ -49,6 +99,7 @@ class SingletonModel(models.Model):
     def load(cls):
         obj, created = cls.objects.get_or_create(pk=1)
         return obj
+
 
 class MainModel(models.Model):
     title_kg = models.CharField(verbose_name='Название на кыргызском', max_length=255, null=True, blank=True, help_text='Введите название на кыргызском языке')
@@ -68,6 +119,9 @@ class MainModel(models.Model):
     def __str__(self):
         return self.title_ru or self.title_kg or self.title_en or str(self.pk) or "No Title"
 
+    class Meta:
+        abstract = True
+
 
 class BaseModel(MainModel):
     content_kg = CKEditor5Field(verbose_name='Контент на кыргызском', config_name='extends', null=True, blank=True, help_text='Введите контент на кыргызском языке')
@@ -75,65 +129,58 @@ class BaseModel(MainModel):
     content_en = CKEditor5Field(verbose_name='Контент на английском', config_name='extends', null=True, blank=True, help_text='Введите контент на английском языке')
 
 
-# class Management(models.Model):
-#     name_kg = models.CharField(verbose_name='ФИО на кыргызском', max_length=255, blank=True, null=True)
-#     name_ru = models.CharField(verbose_name='ФИО на русском', max_length=255, blank=True, null=True)
-#     name_en = models.CharField(verbose_name='ФИО на английском', max_length=255, blank=True, null=True)
-#     job_title_kg = models.CharField(verbose_name='Должность на кыргызском', max_length=255, blank=True, null=True)
-#     job_title_ru = models.CharField(verbose_name='Должность на русском', max_length=255, blank=True, null=True)
-#     job_title_en = models.CharField(verbose_name='Должность на английском', max_length=255, blank=True, null=True)
-#     content_kg = CKEditor5Field(verbose_name='Характеристика на кыргызском', config_name='extends', null=True, blank=True, help_text='Введите характеристику на кыргызском языке')
-#     content_ru = CKEditor5Field(verbose_name='Характеристика на русском', config_name='extends', null=True, blank=True, help_text='Введите характеристику на русском языке')
-#     content_en = CKEditor5Field(verbose_name='Характеристика на английском', config_name='extends', null=True, blank=True, help_text='Введите характеристику на английском языке')
-#     image = models.ImageField(verbose_name='Изображение', upload_to=get_upload_name_management)
-#     image_size_1 = ImageSpecField(source='image', processors=[ResizeToFill(156, 233)], format='JPEG', options={'quality': 90})
-#     image_size_2 = ImageSpecField(source='image', processors=[ResizeToFill(210, 315)], format='JPEG', options={'quality': 90})
-#     image_size_3 = ImageSpecField(source='image', processors=[ResizeToFill(290, 400)], format='JPEG', options={'quality': 90})
-#     image_size_4 = ImageSpecField(source='image', processors=[ResizeToFill(350, 500)], format='JPEG', options={'quality': 90})
-#     created = models.DateTimeField(verbose_name='Дата создания', blank=True, null=True, default=timezone.now)
-#     status = models.BooleanField(default=True, verbose_name='Статус', help_text='Показать статус')
-#     slug = models.SlugField(max_length=255, null=True, blank=True, db_index=True, editable=False)
-#     order = models.PositiveIntegerField(verbose_name='Порядок', help_text='Показать порядок', null=True, blank=True, default=1)
-#
-#     def save(self, *args, **kwargs):
-#         if not self.slug:
-#             random_string = generate_random_string(length=16)
-#             str_to_slugify = f'{random_string}_{datetime.now().strftime("%d_%m_%Y_%H_%M_%S")}'
-#             self.slug = slugify(str_to_slugify)
-#         super(Management, self).save(*args, **kwargs)
-#
-#     def __str__(self):
-#         return self.name_ru or self.name_kg or self.name_en or str(self.pk) or "No Name"
-#
-#     class Meta:
-#         verbose_name = 'Руководство'
-#         verbose_name_plural = 'Руководства'
-#         ordering = ('order','id')
-
-class AboutUs(BaseModel,SingletonModel):
-    content_kg = CKEditor5Field(verbose_name='Контент на кыргызском', config_name='extends', null=True, blank=True,
-                                help_text='Введите контент на кыргызском языке')
-    content_ru = CKEditor5Field(verbose_name='Контент на русском', config_name='extends', null=True, blank=True,
-                                help_text='Введите контент на русском языке')
-    content_en = CKEditor5Field(verbose_name='Контент на английском', config_name='extends', null=True, blank=True,
-                                help_text='Введите контент на английском языке')
+class Management(models.Model):
+    name_kg = models.CharField(verbose_name='ФИО на кыргызском', max_length=255, blank=True, null=True)
+    name_ru = models.CharField(verbose_name='ФИО на русском', max_length=255, blank=True, null=True)
+    name_en = models.CharField(verbose_name='ФИО на английском', max_length=255, blank=True, null=True)
+    job_title_kg = models.CharField(verbose_name='Должность на кыргызском', max_length=255, blank=True, null=True)
+    job_title_ru = models.CharField(verbose_name='Должность на русском', max_length=255, blank=True, null=True)
+    job_title_en = models.CharField(verbose_name='Должность на английском', max_length=255, blank=True, null=True)
+    content_kg = CKEditor5Field(verbose_name='Характеристика на кыргызском', config_name='extends', null=True, blank=True, help_text='Введите характеристику на кыргызском языке')
+    content_ru = CKEditor5Field(verbose_name='Характеристика на русском', config_name='extends', null=True, blank=True, help_text='Введите характеристику на русском языке')
+    content_en = CKEditor5Field(verbose_name='Характеристика на английском', config_name='extends', null=True, blank=True, help_text='Введите характеристику на английском языке')
+    phone = models.CharField(verbose_name='Телефон', max_length=50, blank=True, null=True)
+    email = models.EmailField(verbose_name='Электронная почта', blank=True, null=True)
+    image = models.ImageField(verbose_name='Изображение', upload_to=get_upload_name_management, blank=True, null=True)
     created = models.DateTimeField(verbose_name='Дата создания', blank=True, null=True, default=timezone.now)
     status = models.BooleanField(default=True, verbose_name='Статус', help_text='Показать статус')
     slug = models.SlugField(max_length=255, null=True, blank=True, db_index=True, editable=False, unique=True)
+    order = models.PositiveIntegerField(verbose_name='Порядок', help_text='Показать порядок', null=True, blank=True, default=1)
 
     def save(self, *args, **kwargs):
+        if self.image and hasattr(self.image, 'size'):
+            self.image = compress_image(self.image)
         if not self.slug:
             random_string = generate_random_string(length=16)
             str_to_slugify = f'{random_string}_{datetime.now().strftime("%d_%m_%Y_%H_%M_%S")}'
             self.slug = slugify(str_to_slugify)
-        super(MainModel, self).save(*args, **kwargs)
+        super(Management, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name_ru or self.name_kg or self.name_en or str(self.pk) or "No Name"
+
+    class Meta:
+        verbose_name = 'Руководство'
+        verbose_name_plural = 'Руководства'
+        ordering = ('order', 'id')
+
+
+class AboutUs(BaseModel, SingletonModel):
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        if not self.slug:
+            random_string = generate_random_string(length=16)
+            str_to_slugify = f'{random_string}_{datetime.now().strftime("%d_%m_%Y_%H_%M_%S")}'
+            self.slug = slugify(str_to_slugify)
+        super(AboutUs, self).save(*args, **kwargs)
 
     def __str__(self):
         return "О клинике"
+
     class Meta:
         verbose_name = 'О клинике'
         verbose_name_plural = 'О клинике'
-        ordering = ('id','created')
+        ordering = ('id', 'created')
 
 
 class News(BaseModel):
@@ -148,13 +195,14 @@ class NewsImage(models.Model):
     main_image = models.BooleanField(default=False, help_text='Основное изображение')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания', blank=True, null=True)
     news = models.ForeignKey('News', related_name='images', verbose_name='Новости', on_delete=models.CASCADE)
-    image_size_1 = ImageSpecField(source='image', processors=[ResizeToFill(163, 130)], format='JPEG', options={'quality': 90})
-    image_size_2 = ImageSpecField(source='image', processors=[ResizeToFill(244, 186)], format='JPEG', options={'quality': 90})
-    image_size_3 = ImageSpecField(source='image', processors=[ResizeToFill(700, 615)], format='JPEG', options={'quality': 90})
-    image_size_4 = ImageSpecField(source='image', processors=[ResizeToFill(806, 500)], format='JPEG', options={'quality': 90})
+
+    def save(self, *args, **kwargs):
+        if self.image and hasattr(self.image, 'size'):
+            self.image = compress_image(self.image)
+        super(NewsImage, self).save(*args, **kwargs)
 
     def __str__(self):
-        return 'Фотографии новостей' + str(self.news.id)
+        return 'Фотографии новостей ' + str(self.news.id)
 
     class Meta:
         verbose_name = 'Фотографии новостей'
@@ -162,110 +210,37 @@ class NewsImage(models.Model):
         ordering = ('-created',)
 
 
+class Vacancy(models.Model):
+    title_kg = models.CharField(verbose_name='Название на кыргызском', max_length=500, blank=True, null=True)
+    title_ru = models.CharField(verbose_name='Название на русском', max_length=500, blank=True, null=True)
+    title_en = models.CharField(verbose_name='Название на английском', max_length=500, blank=True, null=True)
+    department_kg = models.CharField(verbose_name='Отдел на кыргызском', max_length=255, blank=True, null=True)
+    department_ru = models.CharField(verbose_name='Отдел на русском', max_length=255, blank=True, null=True)
+    department_en = models.CharField(verbose_name='Отдел на английском', max_length=255, blank=True, null=True)
+    schedule_kg = models.CharField(verbose_name='График на кыргызском', max_length=255, blank=True, null=True)
+    schedule_ru = models.CharField(verbose_name='График на русском', max_length=255, blank=True, null=True)
+    schedule_en = models.CharField(verbose_name='График на английском', max_length=255, blank=True, null=True)
+    salary_kg = models.CharField(verbose_name='Зарплата на кыргызском', max_length=255, blank=True, null=True)
+    salary_ru = models.CharField(verbose_name='Зарплата на русском', max_length=255, blank=True, null=True)
+    salary_en = models.CharField(verbose_name='Зарплата на английском', max_length=255, blank=True, null=True)
+    requirements = models.TextField(verbose_name='Требования', blank=True, null=True, help_text='Требования через запятую')
+    responsibilities = models.TextField(verbose_name='Обязанности', blank=True, null=True, help_text='Обязанности через запятую')
+    created = models.DateTimeField(verbose_name='Дата создания', blank=True, null=True, default=timezone.now)
+    status = models.BooleanField(default=True, verbose_name='Статус', help_text='Показать статус')
+    slug = models.SlugField(max_length=255, null=True, blank=True, db_index=True, editable=False, unique=True)
+    order = models.PositiveIntegerField(verbose_name='Порядок', null=True, blank=True, default=1)
 
-# # Категории социальных сетей
-# SOCIAL_CATEGORY =(
-#     ("facebook", "facebook"),
-#     ("youtube", "youtube"),
-#     ("instagram", "instagram"),
-#     ("tiktok", "tiktok"),
-# )
-#
-#
-# #Социальные ссылки
-# class SocialLinks(models.Model):
-#     title = models.CharField(choices=SOCIAL_CATEGORY, unique=True, verbose_name='Название социальной ссылки', null=True, blank=True)
-#     url = models.CharField(verbose_name='Указатель на страницу', blank=True, null=True, help_text='Введите url страницы')
-#     created = models.DateTimeField(verbose_name='Дата создания', blank=True, null=True, default=timezone.now)
-#     status = models.BooleanField(default=True, verbose_name='Статус', help_text='Показать статус')
-#     slug = models.SlugField(max_length=255, null=True, blank=True, db_index=True, editable=False, unique=True)
-#
-#     def save(self, *args, **kwargs):
-#         if not self.slug:
-#             random_string = generate_random_string(length=16)
-#             str_to_slugify = f'{random_string}_{datetime.now().strftime("%d_%m_%Y_%H_%M_%S")}'
-#             self.slug = slugify(str_to_slugify)
-#         super(SocialLinks, self).save(*args, **kwargs)
-#
-#     def __str__(self):
-#         return str(self.title) if self.title else (self.slug or str(self.pk) or "No Title")
-#
-#     class Meta:
-#         verbose_name = 'Социальное приложение'
-#         verbose_name_plural = 'Социальные приложения'
-#         ordering = ('created', 'id')
-#
-# # Категории фотографий
-# IMAGE_CATEGORY =(
-#     ("image_gellery", 'Фотогалерея'),
-#     ("anniversary", "100-летие"),
-# )
-#
-# class ImagesOfgellery(models.Model):
-#     image = models.ImageField(verbose_name='Изображение', upload_to=get_upload_name_image, help_text='Загрузить изображение')
-#     main_image = models.BooleanField(default=False, help_text='Основное изображение')
-#     created = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания', blank=True, null=True)
-#     image_size_1 = ImageSpecField(source='image', processors=[ResizeToFill(163, 130)], format='JPEG', options={'quality': 90})
-#     image_size_2 = ImageSpecField(source='image', processors=[ResizeToFill(244, 186)], format='JPEG', options={'quality': 90})
-#     image_size_3 = ImageSpecField(source='image', processors=[ResizeToFill(615, 521)], format='JPEG', options={'quality': 90})
-#     image_size_4 = ImageSpecField(source='image', processors=[ResizeToFill(806, 500)], format='JPEG', options={'quality': 90})
-#
-#     def __str__(self):
-#         return 'Изображения фотогалереи ' + str(self.image_gellery.id)
-#
-#     class Meta:
-#         verbose_name = 'Изображения фотогалереи'
-#         verbose_name_plural = 'Изображения фотогалереи'
-#         ordering = ('-created', 'id')
-#
-#
-# #Проверка ссылки YouTube
-# def validate_youtube_url(value):
-#     if not value.startswith('https://www.youtube.com/watch?v='):
-#         raise ValidationError('Пожалуйста, введите корректный URL видео YouTube!')
-#
-#
-# #Видеогалерея
-# class Videogellery(MainModel):
-#     image = models.ImageField(verbose_name='Изображение', upload_to='vidoes/images/', help_text='Загрузить изображение', null=True, blank=True)
-#     youtube_url = models.URLField(verbose_name='YouTube URL', help_text='Введите URL видео на YouTube', validators=[validate_youtube_url], null=True, blank=True)
-#     video = models.FileField(verbose_name='Видео', upload_to='videos/', help_text='Загрузить видео', validators=[FileExtensionValidator(allowed_extensions=['mov', 'avi', 'mp4', 'webm', 'mkv'])], null=True, blank=True)
-#     image_size_2 = ImageSpecField(source='image', processors=[ResizeToFill(244, 186)], format='JPEG', options={'quality': 90})
-#
-#     class Meta:
-#         verbose_name = 'Видеогалерея'
-#         verbose_name_plural = 'Видеогалерея'
-#         ordering = ('-created', 'id')
-#
-#     def __str__(self):
-#         return f'{self.category} - {self.id}'
-#
-#
-# #Обратная связь
-# class Feedback(models.Model):
-#     full_name = models.CharField(verbose_name="ФИО", max_length=255)
-#     email = models.CharField(verbose_name="Электронная почта", max_length=255)
-#     subject = models.CharField(verbose_name="Тема", max_length=255)
-#     phone_number = models.CharField(verbose_name="Номер телефона", max_length=255)
-#     file = models.FileField(verbose_name="Файл", upload_to="feedback_files")
-#     text = models.TextField(verbose_name="Содержание обращения")
-#
-#     created = models.DateTimeField(verbose_name='Дата создания', blank=True, null=True, default=timezone.now)
-#     status = models.BooleanField(default=True, verbose_name='Статус', help_text='Показать статус')
-#     slug = models.SlugField(max_length=255, null=True, blank=True, db_index=True, editable=False, unique=True)
-#
-#     def generate_slug(self):
-#         return str(uuid.uuid4())
-#
-#     def save(self, *args, **kwargs):
-#         if not self.slug:
-#             self.slug = self.generate_slug()
-#         super(Feedback, self).save(*args, **kwargs)
-#
-#     def __str__(self):
-#         return self.email or self.full_name or str(self.pk) or "No Email/Name"
-#
-#     class Meta:
-#         verbose_name = 'Обратная связь'
-#         verbose_name_plural = 'Обратная связь'
-#         ordering = ('created', 'id')
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            random_string = generate_random_string(length=16)
+            str_to_slugify = f'{random_string}_{datetime.now().strftime("%d_%m_%Y_%H_%M_%S")}'
+            self.slug = slugify(str_to_slugify)
+        super(Vacancy, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title_ru or self.title_kg or self.title_en or str(self.pk) or "No Title"
+
+    class Meta:
+        verbose_name = 'Вакансия'
+        verbose_name_plural = 'Вакансии'
+        ordering = ('order', 'id')

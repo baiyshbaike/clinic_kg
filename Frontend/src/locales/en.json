@@ -20,6 +20,23 @@
     "information": "Information",
     "contacts": "Contacts"
   },
+  "management": {
+    "title": "Management",
+    "subtitle": "Management of the Clinical Hospital under the Administration of the President of the Kyrgyz Republic",
+    "contactTitle": "Contact Us",
+    "contactDescription": "For appointments and medical assistance inquiries"
+  },
+  "vacancies": {
+    "title": "Vacancies",
+    "subtitle": "Join our team of professionals",
+    "searchPlaceholder": "Search vacancies...",
+    "requirements": "Requirements",
+    "responsibilities": "Responsibilities",
+    "apply": "Apply",
+    "notFound": "No vacancies found",
+    "noSuitableTitle": "Didn't find a suitable vacancy?",
+    "noSuitableDescription": "Send your resume and we will contact you when a suitable position becomes available."
+  },
   "gallery": {
     "title": "Gallery",
     "subtitle": "Photos of the clinic, departments and workspaces",

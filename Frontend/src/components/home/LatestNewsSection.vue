@@ -1,10 +1,44 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { news } from '@/data/news'
+import { getLatestNews, type NewsItem } from '@/services/api'
 
-const { t } = useI18n()
-const latestNews = news.slice(0, 3)
+const { t, locale } = useI18n()
+const latestNews = ref<NewsItem[]>([])
+const loading = ref(true)
+
+const getTitle = (item: NewsItem) => {
+  const lang = locale.value
+  if (lang === 'ky' || lang === 'kg') return item.title_kg || item.title_ru || ''
+  if (lang === 'en') return item.title_en || item.title_ru || ''
+  return item.title_ru || ''
+}
+
+const getExcerpt = (item: NewsItem) => {
+  const lang = locale.value
+  let content = ''
+  if (lang === 'ky' || lang === 'kg') content = item.content_kg || item.content_ru || ''
+  else if (lang === 'en') content = item.content_en || item.content_ru || ''
+  else content = item.content_ru || ''
+
+  const stripped = content.replace(/<[^>]+>/g, '')
+  return stripped.length > 120 ? stripped.substring(0, 120) + '...' : stripped
+}
+
+const formatDate = (dateStr: string) => {
+  return new Date(dateStr).toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' })
+}
+
+onMounted(async () => {
+  try {
+    latestNews.value = await getLatestNews()
+  } catch (e) {
+    console.error('Ошибка загрузки новостей:', e)
+  } finally {
+    loading.value = false
+  }
+})
 </script>
 
 <template>
@@ -24,18 +58,22 @@ const latestNews = news.slice(0, 3)
         </RouterLink>
       </div>
 
-      <div class="grid md:grid-cols-3 gap-6">
+      <div v-if="loading" class="text-center py-12">
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+
+      <div v-else class="grid md:grid-cols-3 gap-6">
         <RouterLink
           v-for="(item, index) in latestNews"
           :key="item.id"
-          :to="`/news/${item.id}`"
+          :to="`/news/${item.slug}`"
           class="group rounded-2xl bg-white border-2 border-transparent hover:border-primary overflow-hidden card-shadow card-hover no-underline"
         >
           <div class="relative h-48 overflow-hidden">
             <img
-              v-if="item.image"
-              :src="item.image"
-              :alt="item.title"
+              v-if="item.main_image_url"
+              :src="item.main_image_url"
+              :alt="getTitle(item)"
               class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
               loading="lazy"
             />
@@ -59,13 +97,13 @@ const latestNews = news.slice(0, 3)
                 <line x1="8" x2="8" y1="2" y2="6"/>
                 <line x1="3" x2="21" y1="10" y2="10"/>
               </svg>
-              <span>{{ item.date }}</span>
+              <span>{{ formatDate(item.created) }}</span>
             </div>
             <h3 class="text-lg font-semibold mb-2 text-foreground group-hover:text-primary transition-colors">
-              {{ item.title }}
+              {{ getTitle(item) }}
             </h3>
             <p class="text-muted-foreground text-sm mb-4 line-clamp-2">
-              {{ item.excerpt }}
+              {{ getExcerpt(item) }}
             </p>
             <div class="flex items-center gap-2 text-primary font-semibold text-sm group-hover:gap-3 transition-all">
               <span>{{ t('news.readMore') }}</span>

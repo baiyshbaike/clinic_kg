@@ -1,7 +1,30 @@
 <script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { getAboutUs, type AboutUs } from '@/services/api'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
+const aboutData = ref<AboutUs | null>(null)
+const loading = ref(true)
+const error = ref<string | null>(null)
+
+const content = computed(() => {
+  if (!aboutData.value) return ''
+  const lang = locale.value
+  if (lang === 'ky' || lang === 'kg') return aboutData.value.content_kg || ''
+  if (lang === 'en') return aboutData.value.content_en || ''
+  return aboutData.value.content_ru || ''
+})
+
+onMounted(async () => {
+  try {
+    aboutData.value = await getAboutUs()
+  } catch (e) {
+    error.value = 'Ошибка загрузки данных'
+  } finally {
+    loading.value = false
+  }
+})
 
 const services = [
   { titleKey: 'about.services.emergency.title', descKey: 'about.services.emergency.description' },
@@ -34,8 +57,18 @@ const advantages = [
     <section class="py-16">
       <div class="container-custom">
         <div class="max-w-6xl mx-auto">
-<!--          <div v-html></div>-->
-          <p class="text-lg text-muted-foreground mb-8 leading-relaxed">
+          <div v-if="loading" class="text-center py-12">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            <p class="mt-4 text-muted-foreground">{{ t('common.loading') }}</p>
+          </div>
+
+          <div v-else-if="error" class="text-center py-12">
+            <p class="text-destructive">{{ error }}</p>
+          </div>
+
+          <div v-else-if="content" class="prose prose-lg max-w-none mb-8" v-html="content"></div>
+
+          <p v-else class="text-lg text-muted-foreground mb-8 leading-relaxed">
             {{ t('about.description') }}
           </p>
 
