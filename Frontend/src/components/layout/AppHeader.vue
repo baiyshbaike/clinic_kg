@@ -4,23 +4,11 @@ import { RouterLink, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import logoImage from '@/assets/images/logo.png'
 import LanguageSwitcher from '@/components/common/LanguageSwitcher.vue'
+import { navItems } from '@/data/navItems'
 
 const { t } = useI18n()
 const route = useRoute()
 const isMobileMenuOpen = ref(false)
-
-const navItems = [
-  { labelKey: 'nav.home', href: '/' },
-  { labelKey: 'nav.about', href: '/about' },
-  { labelKey: 'nav.management', href: '/management' },
-  { labelKey: 'nav.prices', href: '/prices' },
-  { labelKey: 'nav.vacancies', href: '/vacancies' },
-  { labelKey: 'nav.gallery', href: '/gallery' },
-  { labelKey: 'nav.video_gallery', href: '/video_gallery' },
-  { labelKey: 'nav.renovations', href: '/renovations' },
-  { labelKey: 'nav.information', href: '/information' },
-  { labelKey: 'nav.contacts', href: '/contacts' },
-]
 
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value
@@ -33,7 +21,7 @@ const closeMobileMenu = () => {
 
 <template>
   <div>
-    <!-- Header (not sticky) -->
+    <!-- Header -->
     <header class="gradient-secondary text-white shadow-md">
       <div class="container-custom">
         <div class="flex items-center justify-between py-3">
@@ -79,6 +67,7 @@ const closeMobileMenu = () => {
             </div>
           </div>
 
+          <!-- Hamburger - only visible on mobile -->
           <button
             class="md:hidden p-2 rounded-lg hover:bg-white/20 transition-colors duration-200"
             @click="toggleMobileMenu"

@@ -1,17 +1,11 @@
 import io
-import uuid
 from datetime import datetime
 import random
 import string
 
-from django.core.exceptions import ValidationError
-from django.core.validators import FileExtensionValidator
 from django.utils import timezone
 from django.db import models
 from django_ckeditor_5.fields import CKEditor5Field
-from django.db.models.signals import post_save, post_delete
-from django.dispatch import receiver
-from multiselectfield import MultiSelectField
 from django.utils.text import slugify
 from PIL import Image
 
@@ -38,7 +32,6 @@ def compress_image(image_file):
         img = img.convert('RGB')
 
     img_format = 'JPEG'
-    content_type = image_file.content_type
 
     if hasattr(image_file, 'name') and image_file.name:
         ext = image_file.name.rsplit('.', 1)[-1].lower()
@@ -235,3 +228,120 @@ class Vacancy(models.Model):
         verbose_name = 'Вакансия'
         verbose_name_plural = 'Вакансии'
         ordering = ('order', 'id')
+
+
+# Путь загрузки изображений галереи
+def get_upload_name_gallery(instance, filename):
+    return f'gallery_images/{instance.album.category}/{filename}'
+
+
+GALLERY_CATEGORY_CHOICES = [
+    ('polyclinic', 'Поликлиника'),
+    ('stationary', 'Стационар'),
+    ('ogpmu', 'ОГПМУ'),
+    ('general', 'Общее'),
+]
+
+GALLERY_CATEGORY_DICT = dict(GALLERY_CATEGORY_CHOICES)
+
+
+class GalleryAlbum(models.Model):
+    title_kg = models.CharField(verbose_name='Название на кыргызском', max_length=255, blank=True, null=True)
+    title_ru = models.CharField(verbose_name='Название на русском', max_length=255, blank=True, null=True)
+    category = models.CharField(verbose_name='Категория', max_length=50, choices=GALLERY_CATEGORY_CHOICES, default='general')
+    status = models.BooleanField(default=True, verbose_name='Статус', help_text='Показать статус')
+    created = models.DateTimeField(verbose_name='Дата создания', blank=True, null=True, default=timezone.now)
+
+    def get_category_display_value(self):
+        return GALLERY_CATEGORY_DICT.get(self.category, self.category)
+
+    def __str__(self):
+        return f'{self.get_category_display_value()} - {self.title_ru or self.title_kg or str(self.pk)}'
+
+    class Meta:
+        verbose_name = 'Альбом галереи'
+        verbose_name_plural = 'Альбомы галереи'
+        ordering = ('-created',)
+
+
+class GalleryPhoto(models.Model):
+    album = models.ForeignKey(GalleryAlbum, related_name='photos', verbose_name='Альбом', on_delete=models.CASCADE)
+    image = models.ImageField(verbose_name='Изображение', upload_to=get_upload_name_gallery, help_text='Загрузить изображение')
+    is_main = models.BooleanField(default=False, help_text='Основное изображение')
+    created = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания', blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.image and hasattr(self.image, 'size'):
+            self.image = compress_image(self.image)
+        super(GalleryPhoto, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f'Фото альбома {self.album.pk}'
+
+    class Meta:
+        verbose_name = 'Фотография альбома'
+        verbose_name_plural = 'Фотографии альбома'
+        ordering = ('-created',)
+
+
+class VideoGallery(models.Model):
+    title_kg = models.CharField(verbose_name='Название на кыргызском', max_length=255, blank=True, null=True)
+    title_ru = models.CharField(verbose_name='Название на русском', max_length=255, blank=True, null=True)
+    description_kg = models.TextField(verbose_name='Описание на кыргызском', blank=True, null=True)
+    description_ru = models.TextField(verbose_name='Описание на русском', blank=True, null=True)
+    category = models.CharField(verbose_name='Категория', max_length=50, choices=GALLERY_CATEGORY_CHOICES, default='general')
+    youtube_url = models.URLField(verbose_name='YouTube URL', help_text='Вставьте ссылку на видео YouTube', max_length=500)
+    status = models.BooleanField(default=True, verbose_name='Статус', help_text='Показать статус')
+    created = models.DateTimeField(verbose_name='Дата создания', blank=True, null=True, default=timezone.now)
+
+    def save(self, *args, **kwargs):
+        if not self.youtube_url:
+            super(VideoGallery, self).save(*args, **kwargs)
+            return
+        url = self.youtube_url
+        if 'youtube.com/watch' in url:
+            video_id = url.split('v=')[-1].split('&')[0]
+            self.youtube_url = f'https://www.youtube.com/embed/{video_id}'
+        elif 'youtu.be/' in url:
+            video_id = url.split('youtu.be/')[-1].split('?')[0]
+            self.youtube_url = f'https://www.youtube.com/embed/{video_id}'
+        super(VideoGallery, self).save(*args, **kwargs)
+
+    def get_category_display_value(self):
+        return GALLERY_CATEGORY_DICT.get(self.category, self.category)
+
+    def __str__(self):
+        return f'{self.get_category_display_value()} - {self.title_ru or self.title_kg or str(self.pk)}'
+
+    class Meta:
+        verbose_name = 'Видео галереи'
+        verbose_name_plural = 'Видео галереи'
+        ordering = ('-created',)
+
+
+class ContactMessage(models.Model):
+    name = models.CharField(verbose_name='Имя', max_length=255)
+    email = models.EmailField(verbose_name='Электронная почта')
+    phone = models.CharField(verbose_name='Телефон', max_length=50)
+    message = models.TextField(verbose_name='Сообщение')
+    ip_address = models.GenericIPAddressField(verbose_name='IP адрес', blank=True, null=True)
+    slug = models.SlugField(max_length=255, null=True, blank=True, db_index=True, editable=False, unique=True)
+    created = models.DateTimeField(verbose_name='Дата создания', blank=True, null=True, default=timezone.now)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            random_string = generate_random_string(length=16)
+            str_to_slugify = f'{random_string}_{datetime.now().strftime("%d_%m_%Y_%H_%M_%S")}'
+            self.slug = slugify(str_to_slugify)
+        super(ContactMessage, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.name} - {self.email}'
+
+    class Meta:
+        verbose_name = 'Обратная связь'
+        verbose_name_plural = 'Обратная связь'
+        ordering = ('-created',)
+
+
+

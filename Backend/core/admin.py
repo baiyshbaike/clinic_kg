@@ -173,3 +173,76 @@ class VacancyAdmin(admin.ModelAdmin):
             return obj.department_kg or obj.department_ru or '-'
         return obj.department_ru or obj.department_kg or '-'
     localized_department.short_description = 'Отдел'
+
+
+class GalleryPhotoInline(admin.TabularInline):
+    model = models.GalleryPhoto
+    extra = 1
+    fields = ('image', 'is_main')
+    readonly_fields = ('image_preview',)
+
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" width="100" height="100" style="object-fit: cover;" />', obj.image.url)
+        return '-'
+    image_preview.short_description = 'Превью'
+
+
+@admin.register(models.GalleryAlbum)
+class GalleryAlbumAdmin(admin.ModelAdmin):
+    inlines = [GalleryPhotoInline]
+    list_per_page = 20
+    list_display = ('title_ru', 'category', 'status', 'created')
+    list_editable = ('status',)
+    list_filter = ('category',)
+    search_fields = ('title_ru', 'title_kg')
+    readonly_fields = ('created',)
+    fieldsets = (
+        ('Название', {
+            'fields': ('title_kg', 'title_ru',),
+        }),
+        ('Категория', {
+            'fields': ('category',),
+        }),
+        ('Настройки', {
+            'fields': ('status', 'created',)
+        }),
+    )
+
+
+@admin.register(models.VideoGallery)
+class VideoGalleryAdmin(admin.ModelAdmin):
+    list_per_page = 20
+    list_display = ('title_ru', 'category', 'status', 'created')
+    list_editable = ('status',)
+    list_filter = ('category',)
+    search_fields = ('title_ru', 'title_kg', 'description_ru', 'description_kg')
+    readonly_fields = ('created',)
+    fieldsets = (
+        ('Название', {
+            'fields': ('title_kg', 'title_ru',),
+        }),
+        ('Описание', {
+            'fields': ('description_kg', 'description_ru',),
+        }),
+        ('Категория', {
+            'fields': ('category',),
+        }),
+        ('Видео', {
+            'fields': ('youtube_url',),
+            'description': 'Вставьте ссылку YouTube, например: https://www.youtube.com/watch?v=XXXXX',
+        }),
+        ('Настройки', {
+            'fields': ('status', 'created',)
+        }),
+    )
+
+
+@admin.register(models.ContactMessage)
+class ContactMessageAdmin(admin.ModelAdmin):
+    list_per_page = 20
+    list_display = ('name', 'email', 'phone', 'ip_address', 'created')
+    list_filter = ('created',)
+    search_fields = ('name', 'email', 'phone', 'message')
+    readonly_fields = ('name', 'email', 'phone', 'message', 'ip_address', 'slug', 'created')
+    fields = ('name', 'email', 'phone', 'message', 'ip_address', 'slug', 'created')

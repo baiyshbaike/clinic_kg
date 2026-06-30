@@ -67,9 +67,9 @@ const onSwiper = (swiper: SwiperType) => {
                   {{ t(slide.descriptionKey) }}
                 </p>
                 <div class="mt-8 flex gap-4">
-                  <RouterLink to="/contacts" class="btn-primary text-base no-underline">
+                  <a href="https://mis.med.kg/" target="_blank" rel="noopener noreferrer" class="btn-primary text-base no-underline">
                     {{ t('hero.cta') }}
-                  </RouterLink>
+                  </a>
                   <RouterLink to="/about" class="btn-outline border-white text-white hover:bg-white hover:text-secondary text-base no-underline">
                     {{ t('hero.learnMore') }}
                   </RouterLink>

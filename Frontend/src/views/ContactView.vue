@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { submitContactForm } from '@/services/api'
 
 const { t } = useI18n()
 
@@ -11,19 +12,77 @@ const formData = ref({
   message: '',
 })
 
+const errors = ref<Record<string, string>>({})
 const isSubmitting = ref(false)
 const isSubmitted = ref(false)
+const serverError = ref('')
 
-const handleSubmit = () => {
+const validateForm = (): boolean => {
+  errors.value = {}
+
+  if (!formData.value.name.trim() || formData.value.name.trim().length < 2) {
+    errors.value.name = 'Имя должно содержать минимум 2 символа.'
+  }
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+  if (!formData.value.email.trim()) {
+    errors.value.email = 'Обязательное поле.'
+  } else if (!emailRegex.test(formData.value.email.trim())) {
+    errors.value.email = 'Введите корректный адрес электронной почты.'
+  }
+
+  const cleanedPhone = formData.value.phone.replace(/[\s\-\(\)\+]/g, '')
+  if (!formData.value.phone.trim()) {
+    errors.value.phone = 'Обязательное поле.'
+  } else if (!/^\d{7,}$/.test(cleanedPhone)) {
+    errors.value.phone = 'Введите корректный номер телефона.'
+  }
+
+  if (!formData.value.message.trim()) {
+    errors.value.message = 'Обязательное поле.'
+  } else if (formData.value.message.trim().length < 5) {
+    errors.value.message = 'Сообщение должно содержать минимум 5 символов.'
+  }
+
+  return Object.keys(errors.value).length === 0
+}
+
+const handleSubmit = async () => {
+  serverError.value = ''
+  if (!validateForm()) return
+
   isSubmitting.value = true
-  setTimeout(() => {
-    isSubmitting.value = false
+  try {
+    await submitContactForm({
+      name: formData.value.name.trim(),
+      email: formData.value.email.trim().toLowerCase(),
+      phone: formData.value.phone.trim(),
+      message: formData.value.message.trim(),
+    })
     isSubmitted.value = true
     formData.value = { name: '', email: '', phone: '', message: '' }
-    setTimeout(() => {
-      isSubmitted.value = false
-    }, 3000)
-  }, 1500)
+    errors.value = {}
+    setTimeout(() => { isSubmitted.value = false }, 5000)
+  } catch (e: any) {
+    if (e.response?.data) {
+      const data = e.response.data
+      if (typeof data === 'object') {
+        const fieldErrors: Record<string, string> = {}
+        for (const key in data) {
+          if (Array.isArray(data[key])) {
+            fieldErrors[key] = data[key][0]
+          } else if (typeof data[key] === 'string') {
+            serverError.value = data[key]
+          }
+        }
+        errors.value = { ...errors.value, ...fieldErrors }
+      }
+    } else {
+      serverError.value = 'Произошла ошибка. Попробуйте позже.'
+    }
+  } finally {
+    isSubmitting.value = false
+  }
 }
 </script>
 
@@ -32,9 +91,7 @@ const handleSubmit = () => {
     <div class="gradient-secondary text-white py-16">
       <div class="container-custom">
         <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ t('contact.title') }}</h1>
-        <p class="text-xl opacity-90 max-w-3xl">
-          {{ t('contact.subtitle') }}
-        </p>
+        <p class="text-xl opacity-90 max-w-3xl">{{ t('contact.subtitle') }}</p>
       </div>
     </div>
 
@@ -125,46 +182,62 @@ const handleSubmit = () => {
                 <h3 class="text-2xl font-bold text-secondary">{{ t('contact.form.title') }}</h3>
               </div>
               <div class="p-6">
-                <form @submit.prevent="handleSubmit" class="space-y-4">
+                <div v-if="serverError" class="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+                  {{ serverError }}
+                </div>
+
+                <div v-if="isSubmitted" class="mb-4 p-4 rounded-lg bg-green-50 border border-green-200 text-green-700 text-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-2">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <polyline points="22 4 12 14.01 9 11.01"/>
+                  </svg>
+                  {{ t('contact.form.success') }}
+                </div>
+
+                <form v-else @submit.prevent="handleSubmit" class="space-y-4">
                   <div>
-                    <label class="text-sm font-medium mb-2 block">{{ t('contact.form.name') }}</label>
+                    <label class="text-sm font-medium mb-2 block">{{ t('contact.form.name') }} *</label>
                     <input
                       v-model="formData.name"
                       type="text"
                       :placeholder="t('contact.form.namePlaceholder')"
-                      required
-                      class="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                      class="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                      :class="errors.name ? 'border-red-500' : 'border-border focus:border-primary'"
                     />
+                    <p v-if="errors.name" class="mt-1 text-sm text-red-600">{{ errors.name }}</p>
                   </div>
                   <div>
-                    <label class="text-sm font-medium mb-2 block">{{ t('contact.form.email') }}</label>
+                    <label class="text-sm font-medium mb-2 block">{{ t('contact.form.email') }} *</label>
                     <input
                       v-model="formData.email"
-                      type="email"
+                      type="text"
                       :placeholder="t('contact.form.emailPlaceholder')"
-                      required
-                      class="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                      class="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                      :class="errors.email ? 'border-red-500' : 'border-border focus:border-primary'"
                     />
+                    <p v-if="errors.email" class="mt-1 text-sm text-red-600">{{ errors.email }}</p>
                   </div>
                   <div>
-                    <label class="text-sm font-medium mb-2 block">{{ t('contact.form.phone') }}</label>
+                    <label class="text-sm font-medium mb-2 block">{{ t('contact.form.phone') }} *</label>
                     <input
                       v-model="formData.phone"
                       type="tel"
                       :placeholder="t('contact.form.phonePlaceholder')"
-                      required
-                      class="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                      class="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                      :class="errors.phone ? 'border-red-500' : 'border-border focus:border-primary'"
                     />
+                    <p v-if="errors.phone" class="mt-1 text-sm text-red-600">{{ errors.phone }}</p>
                   </div>
                   <div>
-                    <label class="text-sm font-medium mb-2 block">{{ t('contact.form.message') }}</label>
+                    <label class="text-sm font-medium mb-2 block">{{ t('contact.form.message') }} *</label>
                     <textarea
                       v-model="formData.message"
                       :placeholder="t('contact.form.messagePlaceholder')"
                       rows="5"
-                      required
-                      class="w-full px-4 py-3 rounded-xl border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
+                      class="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
+                      :class="errors.message ? 'border-red-500' : 'border-border focus:border-primary'"
                     ></textarea>
+                    <p v-if="errors.message" class="mt-1 text-sm text-red-600">{{ errors.message }}</p>
                   </div>
                   <button
                     type="submit"
@@ -176,7 +249,6 @@ const handleSubmit = () => {
                       <path d="M22 2 11 13"/>
                     </svg>
                     <span v-if="isSubmitting">{{ t('contact.form.submitting') }}</span>
-                    <span v-else-if="isSubmitted">{{ t('contact.form.success') }}</span>
                     <span v-else>{{ t('contact.form.submit') }}</span>
                   </button>
                 </form>

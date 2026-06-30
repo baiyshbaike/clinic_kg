@@ -59,7 +59,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'django_ckeditor_5',
-    'multiselectfield',
     'imagekit',
     'django_filters',
     'core',

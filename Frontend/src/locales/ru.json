@@ -15,6 +15,7 @@
     "prices": "Цены",
     "vacancies": "Вакансии",
     "gallery": "Галерея",
+    "video_gallery": "Видеогалерея",
     "renovations": "Реконструкция",
     "news": "Новости",
     "information": "Информация",
@@ -41,9 +42,20 @@
     "title": "Галерея",
     "subtitle": "Фотографии клиники, отделений и рабочих пространств",
     "categories": {
-      "clinic": "Клиника",
-      "equipment": "Оборудование",
-      "doctors": "Врачи"
+      "polyclinic": "Поликлиника",
+      "stationary": "Стационар",
+      "ogpmu": "ОГПМУ",
+      "general": "Общее"
+    }
+  },
+  "video_gallery": {
+    "title": "Видеогалерея",
+    "subtitle": "Видео о нашей клинике, отделениях и медицинских программах",
+    "categories": {
+      "polyclinic": "Поликлиника",
+      "stationary": "Стационар",
+      "ogpmu": "ОГПМУ",
+      "general": "Общее"
     }
   },
   "structure": {

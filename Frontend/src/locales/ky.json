@@ -15,6 +15,7 @@
     "prices": "Баалар",
     "vacancies": "Вакансиялар",
     "gallery": "Галерея",
+    "video_gallery": "Видеогалерея",
     "renovations": "Реконструкция",
     "news": "Жаңылыктар",
     "information": "Маалымат",
@@ -41,9 +42,20 @@
     "title": "Галерея",
     "subtitle": "Клиниканын, бөлүмдөрдүн жана иш мейкиндиктеринин сүрөттөрү",
     "categories": {
-      "clinic": "Клиника",
-      "equipment": "Жабдуулар",
-      "doctors": "Дарыгерлер"
+      "polyclinic": "Поликлиника",
+      "stationary": "Стационар",
+      "ogpmu": "ОГПМУ",
+      "general": "Жалпы"
+    }
+  },
+  "video_gallery": {
+    "title": "Видеогалерея",
+    "subtitle": "Биздин клиника, бөлүмдөр жана медициналык программалар жөнүндө видео",
+    "categories": {
+      "polyclinic": "Поликлиника",
+      "stationary": "Стационар",
+      "ogpmu": "ОГПМУ",
+      "general": "Жалпы"
     }
   },
   "structure": {

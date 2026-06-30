@@ -114,4 +114,56 @@ export const getVacancyList = async (): Promise<Vacancy[]> => {
   return response.data
 }
 
-export default api
+export interface GalleryPhoto {
+  id: number
+  image_url: string | null
+  is_main: boolean
+  created: string
+}
+
+export interface GalleryAlbum {
+  id: number
+  title_kg: string
+  title_ru: string
+  category: string
+  category_display: string
+  photos: GalleryPhoto[]
+  main_image_url: string | null
+  status: boolean
+  created: string
+}
+
+export const getGalleryAlbums = async (): Promise<GalleryAlbum[]> => {
+  const response = await api.get<GalleryAlbum[]>('/gallery/')
+  return response.data
+}
+
+export interface VideoGalleryItem {
+  id: number
+  title_kg: string
+  title_ru: string
+  description_kg: string
+  description_ru: string
+  category: string
+  category_display: string
+  youtube_url: string
+  status: boolean
+  created: string
+}
+
+export const getVideoGallery = async (): Promise<VideoGalleryItem[]> => {
+  const response = await api.get<VideoGalleryItem[]>('/video-gallery/')
+  return response.data
+}
+
+export interface ContactFormData {
+  name: string
+  email: string
+  phone: string
+  message: string
+}
+
+export const submitContactForm = async (data: ContactFormData): Promise<{ success: boolean; message: string }> => {
+  const response = await api.post<{ success: boolean; message: string }>('/contact/', data)
+  return response.data
+}

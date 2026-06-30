@@ -35,9 +35,9 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/video_gallery',
-    name: 'vidoe_gallery',
+    name: 'video_gallery',
     component: () => import('@/views/VideoGalleryView.vue'),
-    meta: {titleKey: 'nav.video_gallery'}
+    meta: { titleKey: 'nav.video_gallery' }
   },
   {
     path: '/renovations',

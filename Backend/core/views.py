@@ -1,8 +1,8 @@
-from rest_framework import generics, filters
+from rest_framework import generics, filters, status
+from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
-from django_filters.rest_framework import DjangoFilterBackend
-from .models import AboutUs, News, Management, Vacancy
-from .serializers import AboutUsSerializer, NewsListSerializer, NewsDetailSerializer, ManagementSerializer, VacancySerializer
+from .models import AboutUs, News, Management, Vacancy, GalleryAlbum, VideoGallery, ContactMessage
+from .serializers import AboutUsSerializer, NewsListSerializer, NewsDetailSerializer, ManagementSerializer, VacancySerializer, GalleryAlbumSerializer, VideoGallerySerializer, ContactMessageSerializer
 
 
 class AboutUsView(generics.RetrieveAPIView):
@@ -51,3 +51,32 @@ class VacancyListView(generics.ListAPIView):
     pagination_class = None
     filter_backends = [filters.SearchFilter]
     search_fields = ['title_ru', 'title_kg', 'department_ru', 'department_kg']
+
+
+class GalleryAlbumListView(generics.ListAPIView):
+    queryset = GalleryAlbum.objects.filter(status=True)
+    serializer_class = GalleryAlbumSerializer
+    pagination_class = None
+
+
+class VideoGalleryListView(generics.ListAPIView):
+    queryset = VideoGallery.objects.filter(status=True)
+    serializer_class = VideoGallerySerializer
+    pagination_class = None
+
+
+class ContactMessageCreateView(generics.CreateAPIView):
+    queryset = ContactMessage.objects.all()
+    serializer_class = ContactMessageSerializer
+
+    def get_client_ip(self):
+        x_forwarded = self.request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded:
+            return x_forwarded.split(',')[0].strip()
+        return self.request.META.get('REMOTE_ADDR')
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data, context={'ip_address': self.get_client_ip()})
+        serializer.is_valid(raise_exception=True)
+        serializer.save(ip_address=self.get_client_ip())
+        return Response({'success': True, 'message': 'Сообщение отправлено!'}, status=status.HTTP_201_CREATED)
