@@ -24,7 +24,7 @@ class NewsListView(generics.ListAPIView):
     serializer_class = NewsListSerializer
     pagination_class = NewsPagination
     filter_backends = [filters.SearchFilter]
-    search_fields = ['title_ru', 'title_kg', 'title_en', 'content_ru', 'content_kg', 'content_en']
+    search_fields = ['title_ru', 'title_kg', 'content_ru', 'content_kg']
 
 
 class NewsLatestView(generics.ListAPIView):
@@ -50,4 +50,4 @@ class VacancyListView(generics.ListAPIView):
     serializer_class = VacancySerializer
     pagination_class = None
     filter_backends = [filters.SearchFilter]
-    search_fields = ['title_ru', 'title_kg', 'title_en', 'department_ru', 'department_kg', 'department_en']
+    search_fields = ['title_ru', 'title_kg', 'department_ru', 'department_kg']

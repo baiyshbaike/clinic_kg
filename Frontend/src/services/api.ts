@@ -13,10 +13,8 @@ export interface AboutUs {
   id: number
   title_kg: string
   title_ru: string
-  title_en: string
   content_kg: string
   content_ru: string
-  content_en: string
   status: boolean
   created: string
 }
@@ -32,10 +30,8 @@ export interface NewsItem {
   id: number
   title_kg: string
   title_ru: string
-  title_en: string
   content_kg: string
   content_ru: string
-  content_en: string
   status: boolean
   created: string
   slug: string
@@ -47,13 +43,10 @@ export interface ManagementMember {
   id: number
   name_kg: string
   name_ru: string
-  name_en: string
   job_title_kg: string
   job_title_ru: string
-  job_title_en: string
   content_kg: string
   content_ru: string
-  content_en: string
   phone: string
   email: string
   image_url: string | null
@@ -102,16 +95,12 @@ export interface Vacancy {
   id: number
   title_kg: string
   title_ru: string
-  title_en: string
   department_kg: string
   department_ru: string
-  department_en: string
   schedule_kg: string
   schedule_ru: string
-  schedule_en: string
   salary_kg: string
   salary_ru: string
-  salary_en: string
   requirements: string[]
   responsibilities: string[]
   order: number

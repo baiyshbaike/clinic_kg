@@ -7,14 +7,9 @@ from core import models
 
 def get_localized_title(obj):
     current_language = get_language()
-    if current_language == 'ru':
-        return obj.title_ru or obj.title_kg or obj.title_en or str(obj)
-    elif current_language == 'en':
-        return obj.title_en or obj.title_ru or obj.title_kg or str(obj)
-    elif current_language == 'ky' or current_language == 'kg':
-        return obj.title_kg or obj.title_ru or obj.title_en or str(obj)
-    else:
-        return obj.title_ru or obj.title_kg or obj.title_en or str(obj)
+    if current_language in ('ky', 'kg'):
+        return obj.title_kg or obj.title_ru or str(obj)
+    return obj.title_ru or obj.title_kg or str(obj)
 
 
 @admin.register(models.AboutUs)
@@ -29,9 +24,6 @@ class AboutUsAdmin(admin.ModelAdmin):
         }),
         ('На русском', {
             'fields': ('title_ru', 'content_ru',),
-        }),
-        ('На английском', {
-            'fields': ('title_en', 'content_en',),
         }),
         ('Настройки', {
             'fields': ('status', 'slug', 'created',)
@@ -54,17 +46,17 @@ class ManagementAdmin(admin.ModelAdmin):
     ordering = ('order', 'id')
     list_display = ('image_preview', 'localized_name', 'localized_job_title', 'phone', 'email', 'order', 'status')
     list_editable = ('order', 'status')
-    search_fields = ('name_ru', 'name_kg', 'name_en', 'job_title_ru', 'job_title_kg', 'job_title_en')
+    search_fields = ('name_ru', 'name_kg', 'job_title_ru', 'job_title_kg')
     readonly_fields = ('slug', 'created', 'image_preview')
     fieldsets = (
         ('ФИО', {
-            'fields': ('name_kg', 'name_ru', 'name_en',),
+            'fields': ('name_kg', 'name_ru',),
         }),
         ('Должность', {
-            'fields': ('job_title_kg', 'job_title_ru', 'job_title_en',),
+            'fields': ('job_title_kg', 'job_title_ru',),
         }),
         ('Характеристика', {
-            'fields': ('content_kg', 'content_ru', 'content_en',),
+            'fields': ('content_kg', 'content_ru',),
         }),
         ('Контакты', {
             'fields': ('phone', 'email',),
@@ -85,24 +77,16 @@ class ManagementAdmin(admin.ModelAdmin):
 
     def localized_name(self, obj):
         current_language = get_language()
-        if current_language == 'ru':
-            return obj.name_ru or obj.name_kg or obj.name_en or '-'
-        elif current_language == 'en':
-            return obj.name_en or obj.name_ru or obj.name_kg or '-'
-        elif current_language in ('ky', 'kg'):
-            return obj.name_kg or obj.name_ru or obj.name_en or '-'
-        return obj.name_ru or obj.name_kg or obj.name_en or '-'
+        if current_language in ('ky', 'kg'):
+            return obj.name_kg or obj.name_ru or '-'
+        return obj.name_ru or obj.name_kg or '-'
     localized_name.short_description = 'ФИО'
 
     def localized_job_title(self, obj):
         current_language = get_language()
-        if current_language == 'ru':
-            return obj.job_title_ru or obj.job_title_kg or obj.job_title_en or '-'
-        elif current_language == 'en':
-            return obj.job_title_en or obj.job_title_ru or obj.job_title_kg or '-'
-        elif current_language in ('ky', 'kg'):
-            return obj.job_title_kg or obj.job_title_ru or obj.job_title_en or '-'
-        return obj.job_title_ru or obj.job_title_kg or obj.job_title_en or '-'
+        if current_language in ('ky', 'kg'):
+            return obj.job_title_kg or obj.job_title_ru or '-'
+        return obj.job_title_ru or obj.job_title_kg or '-'
     localized_job_title.short_description = 'Должность'
 
 
@@ -124,7 +108,7 @@ class NewsAdmin(admin.ModelAdmin):
     inlines = [NewsImageInline]
     list_per_page = 20
     ordering = ('-created',)
-    search_fields = ('title_ru', 'title_kg', 'title_en')
+    search_fields = ('title_ru', 'title_kg')
     list_editable = ('status',)
     list_display = ('localized_title', 'status', 'created')
     readonly_fields = ('slug', 'created')
@@ -134,9 +118,6 @@ class NewsAdmin(admin.ModelAdmin):
         }),
         ('На русском', {
             'fields': ('title_ru', 'content_ru',),
-        }),
-        ('На английском', {
-            'fields': ('title_en', 'content_en',),
         }),
         ('Настройки', {
             'fields': ('status', 'slug', 'created',)
@@ -154,20 +135,20 @@ class VacancyAdmin(admin.ModelAdmin):
     ordering = ('order', 'id')
     list_display = ('localized_title', 'localized_department', 'schedule_ru', 'order', 'status')
     list_editable = ('order', 'status')
-    search_fields = ('title_ru', 'title_kg', 'title_en', 'department_ru', 'department_kg', 'department_en')
+    search_fields = ('title_ru', 'title_kg', 'department_ru', 'department_kg')
     readonly_fields = ('slug', 'created')
     fieldsets = (
         ('Название', {
-            'fields': ('title_kg', 'title_ru', 'title_en',),
+            'fields': ('title_kg', 'title_ru',),
         }),
         ('Отдел', {
-            'fields': ('department_kg', 'department_ru', 'department_en',),
+            'fields': ('department_kg', 'department_ru',),
         }),
         ('График', {
-            'fields': ('schedule_kg', 'schedule_ru', 'schedule_en',),
+            'fields': ('schedule_kg', 'schedule_ru',),
         }),
         ('Зарплата', {
-            'fields': ('salary_kg', 'salary_ru', 'salary_en',),
+            'fields': ('salary_kg', 'salary_ru',),
         }),
         ('Требования', {
             'fields': ('requirements',),
@@ -188,11 +169,7 @@ class VacancyAdmin(admin.ModelAdmin):
 
     def localized_department(self, obj):
         current_language = get_language()
-        if current_language == 'ru':
-            return obj.department_ru or obj.department_kg or obj.department_en or '-'
-        elif current_language == 'en':
-            return obj.department_en or obj.department_ru or obj.department_kg or '-'
-        elif current_language in ('ky', 'kg'):
-            return obj.department_kg or obj.department_ru or obj.department_en or '-'
-        return obj.department_ru or obj.department_kg or obj.department_en or '-'
+        if current_language in ('ky', 'kg'):
+            return obj.department_kg or obj.department_ru or '-'
+        return obj.department_ru or obj.department_kg or '-'
     localized_department.short_description = 'Отдел'

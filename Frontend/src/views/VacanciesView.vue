@@ -11,28 +11,24 @@ const loading = ref(true)
 const getTitle = (v: Vacancy) => {
   const lang = locale.value
   if (lang === 'ky' || lang === 'kg') return v.title_kg || v.title_ru || ''
-  if (lang === 'en') return v.title_en || v.title_ru || ''
   return v.title_ru || ''
 }
 
 const getDepartment = (v: Vacancy) => {
   const lang = locale.value
   if (lang === 'ky' || lang === 'kg') return v.department_kg || v.department_ru || ''
-  if (lang === 'en') return v.department_en || v.department_ru || ''
   return v.department_ru || ''
 }
 
 const getSchedule = (v: Vacancy) => {
   const lang = locale.value
   if (lang === 'ky' || lang === 'kg') return v.schedule_kg || v.schedule_ru || ''
-  if (lang === 'en') return v.schedule_en || v.schedule_ru || ''
   return v.schedule_ru || ''
 }
 
 const getSalary = (v: Vacancy) => {
   const lang = locale.value
   if (lang === 'ky' || lang === 'kg') return v.salary_kg || v.salary_ru || ''
-  if (lang === 'en') return v.salary_en || v.salary_ru || ''
   return v.salary_ru || ''
 }
 

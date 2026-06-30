@@ -13,7 +13,6 @@ const loading = ref(true)
 const getTitle = (item: NewsItem) => {
   const lang = locale.value
   if (lang === 'ky' || lang === 'kg') return item.title_kg || item.title_ru || ''
-  if (lang === 'en') return item.title_en || item.title_ru || ''
   return item.title_ru || ''
 }
 
@@ -21,7 +20,6 @@ const getExcerpt = (item: NewsItem) => {
   const lang = locale.value
   let content = ''
   if (lang === 'ky' || lang === 'kg') content = item.content_kg || item.content_ru || ''
-  else if (lang === 'en') content = item.content_en || item.content_ru || ''
   else content = item.content_ru || ''
 
   const stripped = content.replace(/<[^>]+>/g, '')

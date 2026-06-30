@@ -11,7 +11,6 @@ const dropdownRef = ref<HTMLElement | null>(null)
 const languages = [
   { code: 'ru', label: 'Русский', flag: 'RU' },
   { code: 'ky', label: 'Кыргызча', flag: 'KG' },
-  { code: 'en', label: 'English', flag: 'EN' },
 ]
 
 const currentLanguage = computed(() => {

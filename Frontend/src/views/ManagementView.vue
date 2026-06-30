@@ -11,14 +11,12 @@ const loading = ref(true)
 const getName = (member: ManagementMember) => {
   const lang = locale.value
   if (lang === 'ky' || lang === 'kg') return member.name_kg || member.name_ru || ''
-  if (lang === 'en') return member.name_en || member.name_ru || ''
   return member.name_ru || ''
 }
 
 const getJobTitle = (member: ManagementMember) => {
   const lang = locale.value
   if (lang === 'ky' || lang === 'kg') return member.job_title_kg || member.job_title_ru || ''
-  if (lang === 'en') return member.job_title_en || member.job_title_ru || ''
   return member.job_title_ru || ''
 }
 

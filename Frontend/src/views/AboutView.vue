@@ -12,7 +12,6 @@ const content = computed(() => {
   if (!aboutData.value) return ''
   const lang = locale.value
   if (lang === 'ky' || lang === 'kg') return aboutData.value.content_kg || ''
-  if (lang === 'en') return aboutData.value.content_en || ''
   return aboutData.value.content_ru || ''
 })
 

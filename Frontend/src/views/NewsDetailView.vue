@@ -15,14 +15,12 @@ const currentSlide = ref(0)
 const getTitle = (item: NewsItem) => {
   const lang = locale.value
   if (lang === 'ky' || lang === 'kg') return item.title_kg || item.title_ru || ''
-  if (lang === 'en') return item.title_en || item.title_ru || ''
   return item.title_ru || ''
 }
 
 const getContent = (item: NewsItem) => {
   const lang = locale.value
   if (lang === 'ky' || lang === 'kg') return item.content_kg || item.content_ru || ''
-  if (lang === 'en') return item.content_en || item.content_ru || ''
   return item.content_ru || ''
 }
 

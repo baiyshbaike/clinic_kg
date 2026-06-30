@@ -104,7 +104,6 @@ class SingletonModel(models.Model):
 class MainModel(models.Model):
     title_kg = models.CharField(verbose_name='Название на кыргызском', max_length=255, null=True, blank=True, help_text='Введите название на кыргызском языке')
     title_ru = models.CharField(verbose_name='Название на русском', max_length=255, null=True, blank=True, help_text='Введите название на русском языке')
-    title_en = models.CharField(verbose_name='Название на английском', max_length=255, null=True, blank=True, help_text='Введите название на английском языке')
     created = models.DateTimeField(verbose_name='Дата создания', blank=True, null=True, default=timezone.now)
     status = models.BooleanField(default=True, verbose_name='Статус', help_text='Показать статус')
     slug = models.SlugField(max_length=255, null=True, blank=True, db_index=True, editable=False, unique=True)
@@ -117,7 +116,7 @@ class MainModel(models.Model):
         super(MainModel, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.title_ru or self.title_kg or self.title_en or str(self.pk) or "No Title"
+        return self.title_ru or self.title_kg or str(self.pk) or "No Title"
 
     class Meta:
         abstract = True
@@ -126,19 +125,15 @@ class MainModel(models.Model):
 class BaseModel(MainModel):
     content_kg = CKEditor5Field(verbose_name='Контент на кыргызском', config_name='extends', null=True, blank=True, help_text='Введите контент на кыргызском языке')
     content_ru = CKEditor5Field(verbose_name='Контент на русском', config_name='extends', null=True, blank=True, help_text='Введите контент на русском языке')
-    content_en = CKEditor5Field(verbose_name='Контент на английском', config_name='extends', null=True, blank=True, help_text='Введите контент на английском языке')
 
 
 class Management(models.Model):
     name_kg = models.CharField(verbose_name='ФИО на кыргызском', max_length=255, blank=True, null=True)
     name_ru = models.CharField(verbose_name='ФИО на русском', max_length=255, blank=True, null=True)
-    name_en = models.CharField(verbose_name='ФИО на английском', max_length=255, blank=True, null=True)
     job_title_kg = models.CharField(verbose_name='Должность на кыргызском', max_length=255, blank=True, null=True)
     job_title_ru = models.CharField(verbose_name='Должность на русском', max_length=255, blank=True, null=True)
-    job_title_en = models.CharField(verbose_name='Должность на английском', max_length=255, blank=True, null=True)
     content_kg = CKEditor5Field(verbose_name='Характеристика на кыргызском', config_name='extends', null=True, blank=True, help_text='Введите характеристику на кыргызском языке')
     content_ru = CKEditor5Field(verbose_name='Характеристика на русском', config_name='extends', null=True, blank=True, help_text='Введите характеристику на русском языке')
-    content_en = CKEditor5Field(verbose_name='Характеристика на английском', config_name='extends', null=True, blank=True, help_text='Введите характеристику на английском языке')
     phone = models.CharField(verbose_name='Телефон', max_length=50, blank=True, null=True)
     email = models.EmailField(verbose_name='Электронная почта', blank=True, null=True)
     image = models.ImageField(verbose_name='Изображение', upload_to=get_upload_name_management, blank=True, null=True)
@@ -157,7 +152,7 @@ class Management(models.Model):
         super(Management, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.name_ru or self.name_kg or self.name_en or str(self.pk) or "No Name"
+        return self.name_ru or self.name_kg or str(self.pk) or "No Name"
 
     class Meta:
         verbose_name = 'Руководство'
@@ -213,16 +208,12 @@ class NewsImage(models.Model):
 class Vacancy(models.Model):
     title_kg = models.CharField(verbose_name='Название на кыргызском', max_length=500, blank=True, null=True)
     title_ru = models.CharField(verbose_name='Название на русском', max_length=500, blank=True, null=True)
-    title_en = models.CharField(verbose_name='Название на английском', max_length=500, blank=True, null=True)
     department_kg = models.CharField(verbose_name='Отдел на кыргызском', max_length=255, blank=True, null=True)
     department_ru = models.CharField(verbose_name='Отдел на русском', max_length=255, blank=True, null=True)
-    department_en = models.CharField(verbose_name='Отдел на английском', max_length=255, blank=True, null=True)
     schedule_kg = models.CharField(verbose_name='График на кыргызском', max_length=255, blank=True, null=True)
     schedule_ru = models.CharField(verbose_name='График на русском', max_length=255, blank=True, null=True)
-    schedule_en = models.CharField(verbose_name='График на английском', max_length=255, blank=True, null=True)
     salary_kg = models.CharField(verbose_name='Зарплата на кыргызском', max_length=255, blank=True, null=True)
     salary_ru = models.CharField(verbose_name='Зарплата на русском', max_length=255, blank=True, null=True)
-    salary_en = models.CharField(verbose_name='Зарплата на английском', max_length=255, blank=True, null=True)
     requirements = models.TextField(verbose_name='Требования', blank=True, null=True, help_text='Требования через запятую')
     responsibilities = models.TextField(verbose_name='Обязанности', blank=True, null=True, help_text='Обязанности через запятую')
     created = models.DateTimeField(verbose_name='Дата создания', blank=True, null=True, default=timezone.now)
@@ -238,7 +229,7 @@ class Vacancy(models.Model):
         super(Vacancy, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.title_ru or self.title_kg or self.title_en or str(self.pk) or "No Title"
+        return self.title_ru or self.title_kg or str(self.pk) or "No Title"
 
     class Meta:
         verbose_name = 'Вакансия'

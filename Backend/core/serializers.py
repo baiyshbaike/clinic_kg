@@ -5,7 +5,7 @@ from .models import AboutUs, News, NewsImage, Management, Vacancy
 class AboutUsSerializer(serializers.ModelSerializer):
     class Meta:
         model = AboutUs
-        fields = ('id', 'title_kg', 'title_ru', 'title_en', 'content_kg', 'content_ru', 'content_en', 'status', 'created')
+        fields = ('id', 'title_kg', 'title_ru', 'content_kg', 'content_ru', 'status', 'created')
 
 
 class NewsImageSerializer(serializers.ModelSerializer):
@@ -20,7 +20,7 @@ class NewsListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = News
-        fields = ('id', 'title_kg', 'title_ru', 'title_en', 'content_kg', 'content_ru', 'content_en', 'status', 'created', 'slug', 'images', 'main_image_url')
+        fields = ('id', 'title_kg', 'title_ru', 'content_kg', 'content_ru', 'status', 'created', 'slug', 'images', 'main_image_url')
 
     def get_main_image_url(self, obj):
         main_image = obj.images.filter(main_image=True).first()
@@ -37,7 +37,7 @@ class NewsDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = News
-        fields = ('id', 'title_kg', 'title_ru', 'title_en', 'content_kg', 'content_ru', 'content_en', 'status', 'created', 'slug', 'images')
+        fields = ('id', 'title_kg', 'title_ru', 'content_kg', 'content_ru', 'status', 'created', 'slug', 'images')
 
 
 class ManagementSerializer(serializers.ModelSerializer):
@@ -45,8 +45,8 @@ class ManagementSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Management
-        fields = ('id', 'name_kg', 'name_ru', 'name_en', 'job_title_kg', 'job_title_ru', 'job_title_en',
-                  'content_kg', 'content_ru', 'content_en', 'phone', 'email', 'image_url', 'order', 'slug', 'created', 'status')
+        fields = ('id', 'name_kg', 'name_ru', 'job_title_kg', 'job_title_ru',
+                  'content_kg', 'content_ru', 'phone', 'email', 'image_url', 'order', 'slug', 'created', 'status')
 
     def get_image_url(self, obj):
         if obj.image:
@@ -60,8 +60,8 @@ class VacancySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Vacancy
-        fields = ('id', 'title_kg', 'title_ru', 'title_en', 'department_kg', 'department_ru', 'department_en',
-                  'schedule_kg', 'schedule_ru', 'schedule_en', 'salary_kg', 'salary_ru', 'salary_en',
+        fields = ('id', 'title_kg', 'title_ru', 'department_kg', 'department_ru',
+                  'schedule_kg', 'schedule_ru', 'salary_kg', 'salary_ru',
                   'requirements', 'responsibilities', 'order', 'slug', 'created', 'status')
 
     def _split_text(self, text):

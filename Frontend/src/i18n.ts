@@ -1,12 +1,11 @@
 import { createI18n } from 'vue-i18n'
 import ru from '@/locales/ru.json'
 import ky from '@/locales/ky.json'
-import en from '@/locales/en.json'
 
-// Use Russian as the default language unless the user explicitly saved another choice.
+// По умолчанию русский язык, если пользователь не выбрал другой
 const getDefaultLocale = (): string => {
   const savedLocale = localStorage.getItem('clinic-language')
-  if (savedLocale && ['ru', 'ky', 'en'].includes(savedLocale)) {
+  if (savedLocale && ['ru', 'ky'].includes(savedLocale)) {
     return savedLocale
   }
 
@@ -20,7 +19,6 @@ const i18n = createI18n({
   messages: {
     ru,
     ky,
-    en,
   },
 })
 
